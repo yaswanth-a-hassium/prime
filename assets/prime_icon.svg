@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>Prime: Hassium (Hs, 108) with electrons 2-8-18-32-32-14-2</title>
+
+  <defs>
+    <radialGradient id="nucleus" cx="40%" cy="35%" r="70%">
+      <stop offset="0" stop-color="#d9dee4"/><stop offset=".55" stop-color="#8e98a3"/>
+      <stop offset="1" stop-color="#3b424b"/>
+    </radialGradient>
+    <radialGradient id="electron" cx="35%" cy="30%" r="75%">
+      <stop offset="0" stop-color="#ffffff"/><stop offset=".45" stop-color="#9fd8ff"/>
+      <stop offset="1" stop-color="#4fb3ff"/>
+    </radialGradient>
+    <linearGradient id="plate" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5d6670"/><stop offset=".45" stop-color="#2f353c"/>
+      <stop offset="1" stop-color="#1a1e23"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#d9dee4"/><stop offset=".5" stop-color="#8e98a3"/>
+      <stop offset="1" stop-color="#d9dee4"/>
+    </linearGradient>
+    <pattern id="brush" width="1024" height="6" patternUnits="userSpaceOnUse">
+      <rect width="1024" height="3" fill="#ffffff" opacity=".035"/>
+    </pattern>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect x="24" y="24" width="976" height="976" rx="220" fill="url(#plate)"/>
+  <rect x="24" y="24" width="976" height="976" rx="220" fill="url(#brush)"/>
+  <rect x="30" y="30" width="964" height="964" rx="214" fill="none" stroke="#8e98a3" stroke-opacity=".7" stroke-width="6"/>
+  <circle cx="512" cy="512" r="172" fill="none" stroke="url(#ring)" stroke-width="4" stroke-opacity=".75"/>
+  <circle cx="512" cy="512" r="222" fill="none" stroke="url(#ring)" stroke-width="4" stroke-opacity=".75"/>
+  <circle cx="512" cy="512" r="272" fill="none" stroke="url(#ring)" stroke-width="4" stroke-opacity=".75"/>
+  <circle cx="512" cy="512" r="322" fill="none" stroke="url(#ring)" stroke-width="4" stroke-opacity=".75"/>
+  <circle cx="512" cy="512" r="372" fill="none" stroke="url(#ring)" stroke-width="4" stroke-opacity=".75"/>
+  <circle cx="512" cy="512" r="422" fill="none" stroke="url(#ring)" stroke-width="4" stroke-opacity=".75"/>
+  <circle cx="512" cy="512" r="472" fill="none" stroke="url(#ring)" stroke-width="4" stroke-opacity=".75"/>
+  <g filter="url(#glow)">
+    <circle cx="684.00" cy="512.00" r="11" fill="url(#electron)"/>
+    <circle cx="340.00" cy="512.00" r="11" fill="url(#electron)"/>
+    <circle cx="596.96" cy="306.90" r="11" fill="url(#electron)"/>
+    <circle cx="717.10" cy="427.04" r="11" fill="url(#electron)"/>
+    <circle cx="717.10" cy="596.96" r="11" fill="url(#electron)"/>
+    <circle cx="596.96" cy="717.10" r="11" fill="url(#electron)"/>
+    <circle cx="427.04" cy="717.10" r="11" fill="url(#electron)"/>
+    <circle cx="306.90" cy="596.96" r="11" fill="url(#electron)"/>
+    <circle cx="306.90" cy="427.04" r="11" fill="url(#electron)"/>
+    <circle cx="427.04" cy="306.90" r="11" fill="url(#electron)"/>
+    <circle cx="559.23" cy="244.13" r="10.5" fill="url(#electron)"/>
+    <circle cx="648.00" cy="276.44" r="10.5" fill="url(#electron)"/>
+    <circle cx="720.36" cy="337.16" r="10.5" fill="url(#electron)"/>
+    <circle cx="767.60" cy="418.97" r="10.5" fill="url(#electron)"/>
+    <circle cx="784.00" cy="512.00" r="10.5" fill="url(#electron)"/>
+    <circle cx="767.60" cy="605.03" r="10.5" fill="url(#electron)"/>
+    <circle cx="720.36" cy="686.84" r="10.5" fill="url(#electron)"/>
+    <circle cx="648.00" cy="747.56" r="10.5" fill="url(#electron)"/>
+    <circle cx="559.23" cy="779.87" r="10.5" fill="url(#electron)"/>
+    <circle cx="464.77" cy="779.87" r="10.5" fill="url(#electron)"/>
+    <circle cx="376.00" cy="747.56" r="10.5" fill="url(#electron)"/>
+    <circle cx="303.64" cy="686.84" r="10.5" fill="url(#electron)"/>
+    <circle cx="256.40" cy="605.03" r="10.5" fill="url(#electron)"/>
+    <circle cx="240.00" cy="512.00" r="10.5" fill="url(#electron)"/>
+    <circle cx="256.40" cy="418.97" r="10.5" fill="url(#electron)"/>
+    <circle cx="303.64" cy="337.16" r="10.5" fill="url(#electron)"/>
+    <circle cx="376.00" cy="276.44" r="10.5" fill="url(#electron)"/>
+    <circle cx="464.77" cy="244.13" r="10.5" fill="url(#electron)"/>
+    <circle cx="512.00" cy="190.00" r="9" fill="url(#electron)"/>
+    <circle cx="574.82" cy="196.19" r="9" fill="url(#electron)"/>
+    <circle cx="635.22" cy="214.51" r="9" fill="url(#electron)"/>
+    <circle cx="690.89" cy="244.27" r="9" fill="url(#electron)"/>
+    <circle cx="739.69" cy="284.31" r="9" fill="url(#electron)"/>
+    <circle cx="779.73" cy="333.11" r="9" fill="url(#electron)"/>
+    <circle cx="809.49" cy="388.78" r="9" fill="url(#electron)"/>
+    <circle cx="827.81" cy="449.18" r="9" fill="url(#electron)"/>
+    <circle cx="834.00" cy="512.00" r="9" fill="url(#electron)"/>
+    <circle cx="827.81" cy="574.82" r="9" fill="url(#electron)"/>
+    <circle cx="809.49" cy="635.22" r="9" fill="url(#electron)"/>
+    <circle cx="779.73" cy="690.89" r="9" fill="url(#electron)"/>
+    <circle cx="739.69" cy="739.69" r="9" fill="url(#electron)"/>
+    <circle cx="690.89" cy="779.73" r="9" fill="url(#electron)"/>
+    <circle cx="635.22" cy="809.49" r="9" fill="url(#electron)"/>
+    <circle cx="574.82" cy="827.81" r="9" fill="url(#electron)"/>
+    <circle cx="512.00" cy="834.00" r="9" fill="url(#electron)"/>
+    <circle cx="449.18" cy="827.81" r="9" fill="url(#electron)"/>
+    <circle cx="388.78" cy="809.49" r="9" fill="url(#electron)"/>
+    <circle cx="333.11" cy="779.73" r="9" fill="url(#electron)"/>
+    <circle cx="284.31" cy="739.69" r="9" fill="url(#electron)"/>
+    <circle cx="244.27" cy="690.89" r="9" fill="url(#electron)"/>
+    <circle cx="214.51" cy="635.22" r="9" fill="url(#electron)"/>
+    <circle cx="196.19" cy="574.82" r="9" fill="url(#electron)"/>
+    <circle cx="190.00" cy="512.00" r="9" fill="url(#electron)"/>
+    <circle cx="196.19" cy="449.18" r="9" fill="url(#electron)"/>
+    <circle cx="214.51" cy="388.78" r="9" fill="url(#electron)"/>
+    <circle cx="244.27" cy="333.11" r="9" fill="url(#electron)"/>
+    <circle cx="284.31" cy="284.31" r="9" fill="url(#electron)"/>
+    <circle cx="333.11" cy="244.27" r="9" fill="url(#electron)"/>
+    <circle cx="388.78" cy="214.51" r="9" fill="url(#electron)"/>
+    <circle cx="449.18" cy="196.19" r="9" fill="url(#electron)"/>
+    <circle cx="548.46" cy="141.79" r="9" fill="url(#electron)"/>
+    <circle cx="619.99" cy="156.02" r="9" fill="url(#electron)"/>
+    <circle cx="687.36" cy="183.93" r="9" fill="url(#electron)"/>
+    <circle cx="747.99" cy="224.44" r="9" fill="url(#electron)"/>
+    <circle cx="799.56" cy="276.01" r="9" fill="url(#electron)"/>
+    <circle cx="840.07" cy="336.64" r="9" fill="url(#electron)"/>
+    <circle cx="867.98" cy="404.01" r="9" fill="url(#electron)"/>
+    <circle cx="882.21" cy="475.54" r="9" fill="url(#electron)"/>
+    <circle cx="882.21" cy="548.46" r="9" fill="url(#electron)"/>
+    <circle cx="867.98" cy="619.99" r="9" fill="url(#electron)"/>
+    <circle cx="840.07" cy="687.36" r="9" fill="url(#electron)"/>
+    <circle cx="799.56" cy="747.99" r="9" fill="url(#electron)"/>
+    <circle cx="747.99" cy="799.56" r="9" fill="url(#electron)"/>
+    <circle cx="687.36" cy="840.07" r="9" fill="url(#electron)"/>
+    <circle cx="619.99" cy="867.98" r="9" fill="url(#electron)"/>
+    <circle cx="548.46" cy="882.21" r="9" fill="url(#electron)"/>
+    <circle cx="475.54" cy="882.21" r="9" fill="url(#electron)"/>
+    <circle cx="404.01" cy="867.98" r="9" fill="url(#electron)"/>
+    <circle cx="336.64" cy="840.07" r="9" fill="url(#electron)"/>
+    <circle cx="276.01" cy="799.56" r="9" fill="url(#electron)"/>
+    <circle cx="224.44" cy="747.99" r="9" fill="url(#electron)"/>
+    <circle cx="183.93" cy="687.36" r="9" fill="url(#electron)"/>
+    <circle cx="156.02" cy="619.99" r="9" fill="url(#electron)"/>
+    <circle cx="141.79" cy="548.46" r="9" fill="url(#electron)"/>
+    <circle cx="141.79" cy="475.54" r="9" fill="url(#electron)"/>
+    <circle cx="156.02" cy="404.01" r="9" fill="url(#electron)"/>
+    <circle cx="183.93" cy="336.64" r="9" fill="url(#electron)"/>
+    <circle cx="224.44" cy="276.01" r="9" fill="url(#electron)"/>
+    <circle cx="276.01" cy="224.44" r="9" fill="url(#electron)"/>
+    <circle cx="336.64" cy="183.93" r="9" fill="url(#electron)"/>
+    <circle cx="404.01" cy="156.02" r="9" fill="url(#electron)"/>
+    <circle cx="475.54" cy="141.79" r="9" fill="url(#electron)"/>
+    <circle cx="605.92" cy="100.59" r="10" fill="url(#electron)"/>
+    <circle cx="775.13" cy="182.08" r="10" fill="url(#electron)"/>
+    <circle cx="892.22" cy="328.92" r="10" fill="url(#electron)"/>
+    <circle cx="934.00" cy="512.02" r="10" fill="url(#electron)"/>
+    <circle cx="892.20" cy="695.12" r="10" fill="url(#electron)"/>
+    <circle cx="775.10" cy="841.95" r="10" fill="url(#electron)"/>
+    <circle cx="605.88" cy="923.42" r="10" fill="url(#electron)"/>
+    <circle cx="418.08" cy="923.41" r="10" fill="url(#electron)"/>
+    <circle cx="248.87" cy="841.92" r="10" fill="url(#electron)"/>
+    <circle cx="131.78" cy="695.08" r="10" fill="url(#electron)"/>
+    <circle cx="90.00" cy="511.98" r="10" fill="url(#electron)"/>
+    <circle cx="131.80" cy="328.88" r="10" fill="url(#electron)"/>
+    <circle cx="248.90" cy="182.05" r="10" fill="url(#electron)"/>
+    <circle cx="418.12" cy="100.58" r="10" fill="url(#electron)"/>
+    <circle cx="512.00" cy="40.00" r="11" fill="url(#electron)"/>
+    <circle cx="512.00" cy="984.00" r="11" fill="url(#electron)"/>
+  </g>
+  <circle cx="512" cy="512" r="118" fill="url(#nucleus)" stroke="#4fb3ff" stroke-width="6"/>
+  <text x="512" y="556" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-weight="700" font-size="128" fill="#0f1317" letter-spacing="-2">Hs</text>
+  <text x="512" y="450" text-anchor="middle" font-family="Helvetica Neue, Arial, sans-serif" font-weight="600" font-size="30" fill="#1b2128">108</text>
+</svg>

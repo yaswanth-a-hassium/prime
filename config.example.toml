@@ -1,0 +1,32 @@
+# PRIME configuration (macOS). Copy to config.toml (done automatically on first run) and edit.
+# No secrets belong here: passwords live in the encrypted vault (Vault panel; its key is in your Keychain).
+# Most day-to-day choices (voice, the robot effect's depth and pitch, name, wake sensitivity, approvals) are on
+# the Settings page and saved in settings.json in Prime's data folder.
+
+[brain]
+provider = "claude_code"          # claude_code (your Claude subscription via the Claude Code CLI) | echo (offline test)
+cli_path = "~/.local/bin/claude"  # where `curl -fsSL https://claude.ai/install.sh | bash` puts it; Homebrew: /opt/homebrew/bin/claude
+model = ""                        # "" = account default; "claude-opus-5-5", "sonnet" or "haiku" for faster/cheaper replies
+workdir = "~"                     # folder the brain starts in
+slow_ack_seconds = 4              # say "one moment" when a reply takes longer than this
+
+[permissions]
+ask = true                        # false = no approval prompts at all (not recommended)
+timeout_seconds = 90              # unanswered approval requests are denied after this
+
+[storage]
+data_dir = ""                     # "" = automatic (~/PrimeMemory, or $PRIME_DATA); see paths.py
+
+[voice]
+enabled = true
+wake_model = "hey_jarvis"         # openWakeWord's pre-trained phrase; saying "Prime" in a sentence also wakes it
+wake_threshold = 0.5              # raise if it wakes by accident, lower if it misses you
+whisper_model = "small"           # faster-whisper on the CPU (int8); Apple Silicon handles "small" comfortably
+whisper_device = "cpu"            # CTranslate2 has no Metal backend; the CPU is fast on M-series chips
+tts = "edge"                      # edge (online, Microsoft neural voices) | say (offline, macOS voices)
+edge_voice = "en-US-ChristopherNeural"
+follow_up_seconds = 5             # 0 = always require the wake word
+
+[privacy]
+keep_raw_audio = false            # never write microphone audio to disk
+history_days = 0                  # 0 = keep conversation history forever; N = delete after N days

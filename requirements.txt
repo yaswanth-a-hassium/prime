@@ -1,0 +1,41 @@
+# Prime (macOS, Apple Silicon). Python 3.12 recommended (Homebrew: brew install python@3.12).
+# install_mac.sh installs these into .venv. Versions match the Windows Jarvis build where the package is the same.
+
+# brain
+claude-agent-sdk==0.2.168
+
+# hearing: wake word, speech recognition, who is speaking
+sounddevice==0.5.6
+numpy==2.5.4
+scipy==1.18.1
+onnxruntime==1.31.0
+openwakeword==0.6.0
+faster-whisper==1.2.1
+ctranslate2==4.8.3
+huggingface_hub==2.2.0
+sherpa-onnx==1.13.8
+
+# voice: neural TTS (online) + robot effect (robovoice.py); offline fallback is macOS `say`
+edge-tts==7.3.1
+miniaudio==1.71
+
+# eyes: webcam, video recording, screenshots
+opencv-python==5.0.0.93
+av==19.0.1
+pillow==13.0.0
+PyAutoGUI==0.9.54
+
+# window, menu bar, hotkeys, windows/apps (PyObjC)
+pywebview==6.2.1
+pyobjc-core>=11
+pyobjc-framework-Cocoa>=11
+pyobjc-framework-Quartz>=11
+pyobjc-framework-ApplicationServices>=11
+pyobjc-framework-WebKit>=11
+
+# vault: Fernet file, key in the macOS Keychain
+cryptography==50.0.2
+keyring>=25
+
+# tests
+pytest==9.1.1

@@ -1,0 +1,1297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>PRIME</title>
+<style>
+  /* One conversation screen, one focal point. The display is the hero when it is quiet and shrinks to a status
+     strip once you are talking; everything secondary lives behind the menu. 8px grid, brushed steel surfaces and
+     one cool accent that follows Prime's state. */
+  :root {
+    --bg: #0e1114; --s1: #161a1f; --s2: #1d2228; --s3: #252b33; --s4: #2f363f;
+    --line: rgba(180, 200, 220, .08); --line2: rgba(180, 200, 220, .16);
+    --ink: #e9eef3; --text: #c3cbd3; --muted: #87919c; --faint: #5a636d;
+    --a: #4fb3ff; --ok: #6fe3b4; --warn: #ffb020; --bad: #ff4d5e;
+    --r1: 6px; --r2: 9px; --r3: 13px; --r4: 16px; --rp: 7px;
+    --sans: -apple-system, "SF Pro Text", "Helvetica Neue", system-ui, sans-serif;
+    --display: -apple-system, "SF Pro Display", "Helvetica Neue", system-ui, sans-serif;
+    --mono: "SF Mono", Menlo, monospace;
+    --on-a: #06121c;                                                         /* text on an accent fill */
+    /* brushed metal: fine horizontal hairlines over a vertical steel gradient, plus a thin top bevel */
+    --brush: repeating-linear-gradient(0deg, rgba(255, 255, 255, .016) 0 1px, transparent 1px 2px, rgba(0, 0, 0, .05) 2px 3px);
+    --steel: linear-gradient(180deg, #181d23 0%, #0e1114 46%, #0b0d10 100%);
+    --plate: linear-gradient(180deg, rgba(255, 255, 255, .045), rgba(255, 255, 255, 0) 60%);
+    --bevel: inset 0 1px 0 rgba(255, 255, 255, .06);
+    --ease: cubic-bezier(.2, .8, .2, 1);
+  --logo: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='-512%20-512%201024%201024'%3E%3Cdefs%3E%3CradialGradient%20id='n'%20cx='40%25'%20cy='35%25'%20r='70%25'%3E%3Cstop%20offset='0'%20stop-color='%23d9dee4'/%3E%3Cstop%20offset='.55'%20stop-color='%238e98a3'/%3E%3Cstop%20offset='1'%20stop-color='%233b424b'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg%20fill='none'%20stroke='%23a9b3be'%20stroke-opacity='.7'%20stroke-width='9'%3E%3Ccircle%20r='172'/%3E%3Ccircle%20r='222'/%3E%3Ccircle%20r='272'/%3E%3Ccircle%20r='322'/%3E%3Ccircle%20r='372'/%3E%3Ccircle%20r='422'/%3E%3Ccircle%20r='472'/%3E%3C/g%3E%3Cg%20fill='%234fb3ff'%3E%3Ccircle%20cx='172'%20cy='0'%20r='17'/%3E%3Ccircle%20cx='-172'%20cy='0'%20r='17'/%3E%3Ccircle%20cx='85'%20cy='-205'%20r='17'/%3E%3Ccircle%20cx='205'%20cy='-85'%20r='17'/%3E%3Ccircle%20cx='205'%20cy='85'%20r='17'/%3E%3Ccircle%20cx='85'%20cy='205'%20r='17'/%3E%3Ccircle%20cx='-85'%20cy='205'%20r='17'/%3E%3Ccircle%20cx='-205'%20cy='85'%20r='17'/%3E%3Ccircle%20cx='-205'%20cy='-85'%20r='17'/%3E%3Ccircle%20cx='-85'%20cy='-205'%20r='17'/%3E%3Ccircle%20cx='47'%20cy='-268'%20r='17'/%3E%3Ccircle%20cx='136'%20cy='-236'%20r='17'/%3E%3Ccircle%20cx='208'%20cy='-175'%20r='17'/%3E%3Ccircle%20cx='256'%20cy='-93'%20r='17'/%3E%3Ccircle%20cx='272'%20cy='0'%20r='17'/%3E%3Ccircle%20cx='256'%20cy='93'%20r='17'/%3E%3Ccircle%20cx='208'%20cy='175'%20r='17'/%3E%3Ccircle%20cx='136'%20cy='236'%20r='17'/%3E%3Ccircle%20cx='47'%20cy='268'%20r='17'/%3E%3Ccircle%20cx='-47'%20cy='268'%20r='17'/%3E%3Ccircle%20cx='-136'%20cy='236'%20r='17'/%3E%3Ccircle%20cx='-208'%20cy='175'%20r='17'/%3E%3Ccircle%20cx='-256'%20cy='93'%20r='17'/%3E%3Ccircle%20cx='-272'%20cy='0'%20r='17'/%3E%3Ccircle%20cx='-256'%20cy='-93'%20r='17'/%3E%3Ccircle%20cx='-208'%20cy='-175'%20r='17'/%3E%3Ccircle%20cx='-136'%20cy='-236'%20r='17'/%3E%3Ccircle%20cx='-47'%20cy='-268'%20r='17'/%3E%3Ccircle%20cx='32'%20cy='-320'%20r='17'/%3E%3Ccircle%20cx='93'%20cy='-308'%20r='17'/%3E%3Ccircle%20cx='152'%20cy='-284'%20r='17'/%3E%3Ccircle%20cx='204'%20cy='-249'%20r='17'/%3E%3Ccircle%20cx='249'%20cy='-204'%20r='17'/%3E%3Ccircle%20cx='284'%20cy='-152'%20r='17'/%3E%3Ccircle%20cx='308'%20cy='-93'%20r='17'/%3E%3Ccircle%20cx='320'%20cy='-32'%20r='17'/%3E%3Ccircle%20cx='320'%20cy='32'%20r='17'/%3E%3Ccircle%20cx='308'%20cy='93'%20r='17'/%3E%3Ccircle%20cx='284'%20cy='152'%20r='17'/%3E%3Ccircle%20cx='249'%20cy='204'%20r='17'/%3E%3Ccircle%20cx='204'%20cy='249'%20r='17'/%3E%3Ccircle%20cx='152'%20cy='284'%20r='17'/%3E%3Ccircle%20cx='93'%20cy='308'%20r='17'/%3E%3Ccircle%20cx='32'%20cy='320'%20r='17'/%3E%3Ccircle%20cx='-32'%20cy='320'%20r='17'/%3E%3Ccircle%20cx='-93'%20cy='308'%20r='17'/%3E%3Ccircle%20cx='-152'%20cy='284'%20r='17'/%3E%3Ccircle%20cx='-204'%20cy='249'%20r='17'/%3E%3Ccircle%20cx='-249'%20cy='204'%20r='17'/%3E%3Ccircle%20cx='-284'%20cy='152'%20r='17'/%3E%3Ccircle%20cx='-308'%20cy='93'%20r='17'/%3E%3Ccircle%20cx='-320'%20cy='32'%20r='17'/%3E%3Ccircle%20cx='-320'%20cy='-32'%20r='17'/%3E%3Ccircle%20cx='-308'%20cy='-93'%20r='17'/%3E%3Ccircle%20cx='-284'%20cy='-152'%20r='17'/%3E%3Ccircle%20cx='-249'%20cy='-204'%20r='17'/%3E%3Ccircle%20cx='-204'%20cy='-249'%20r='17'/%3E%3Ccircle%20cx='-152'%20cy='-284'%20r='17'/%3E%3Ccircle%20cx='-93'%20cy='-308'%20r='17'/%3E%3Ccircle%20cx='-32'%20cy='-320'%20r='17'/%3E%3Ccircle%20cx='36'%20cy='-370'%20r='17'/%3E%3Ccircle%20cx='108'%20cy='-356'%20r='17'/%3E%3Ccircle%20cx='175'%20cy='-328'%20r='17'/%3E%3Ccircle%20cx='236'%20cy='-288'%20r='17'/%3E%3Ccircle%20cx='288'%20cy='-236'%20r='17'/%3E%3Ccircle%20cx='328'%20cy='-175'%20r='17'/%3E%3Ccircle%20cx='356'%20cy='-108'%20r='17'/%3E%3Ccircle%20cx='370'%20cy='-36'%20r='17'/%3E%3Ccircle%20cx='370'%20cy='36'%20r='17'/%3E%3Ccircle%20cx='356'%20cy='108'%20r='17'/%3E%3Ccircle%20cx='328'%20cy='175'%20r='17'/%3E%3Ccircle%20cx='288'%20cy='236'%20r='17'/%3E%3Ccircle%20cx='236'%20cy='288'%20r='17'/%3E%3Ccircle%20cx='175'%20cy='328'%20r='17'/%3E%3Ccircle%20cx='108'%20cy='356'%20r='17'/%3E%3Ccircle%20cx='36'%20cy='370'%20r='17'/%3E%3Ccircle%20cx='-36'%20cy='370'%20r='17'/%3E%3Ccircle%20cx='-108'%20cy='356'%20r='17'/%3E%3Ccircle%20cx='-175'%20cy='328'%20r='17'/%3E%3Ccircle%20cx='-236'%20cy='288'%20r='17'/%3E%3Ccircle%20cx='-288'%20cy='236'%20r='17'/%3E%3Ccircle%20cx='-328'%20cy='175'%20r='17'/%3E%3Ccircle%20cx='-356'%20cy='108'%20r='17'/%3E%3Ccircle%20cx='-370'%20cy='36'%20r='17'/%3E%3Ccircle%20cx='-370'%20cy='-36'%20r='17'/%3E%3Ccircle%20cx='-356'%20cy='-108'%20r='17'/%3E%3Ccircle%20cx='-328'%20cy='-175'%20r='17'/%3E%3Ccircle%20cx='-288'%20cy='-236'%20r='17'/%3E%3Ccircle%20cx='-236'%20cy='-288'%20r='17'/%3E%3Ccircle%20cx='-175'%20cy='-328'%20r='17'/%3E%3Ccircle%20cx='-108'%20cy='-356'%20r='17'/%3E%3Ccircle%20cx='-36'%20cy='-370'%20r='17'/%3E%3Ccircle%20cx='94'%20cy='-411'%20r='17'/%3E%3Ccircle%20cx='263'%20cy='-330'%20r='17'/%3E%3Ccircle%20cx='380'%20cy='-183'%20r='17'/%3E%3Ccircle%20cx='422'%20cy='0'%20r='17'/%3E%3Ccircle%20cx='380'%20cy='183'%20r='17'/%3E%3Ccircle%20cx='263'%20cy='330'%20r='17'/%3E%3Ccircle%20cx='94'%20cy='411'%20r='17'/%3E%3Ccircle%20cx='-94'%20cy='411'%20r='17'/%3E%3Ccircle%20cx='-263'%20cy='330'%20r='17'/%3E%3Ccircle%20cx='-380'%20cy='183'%20r='17'/%3E%3Ccircle%20cx='-422'%20cy='0'%20r='17'/%3E%3Ccircle%20cx='-380'%20cy='-183'%20r='17'/%3E%3Ccircle%20cx='-263'%20cy='-330'%20r='17'/%3E%3Ccircle%20cx='-94'%20cy='-411'%20r='17'/%3E%3Ccircle%20cx='472'%20cy='0'%20r='17'/%3E%3Ccircle%20cx='-472'%20cy='0'%20r='17'/%3E%3C/g%3E%3Ccircle%20r='124'%20fill='url(%23n)'%20stroke='%234fb3ff'%20stroke-width='10'/%3E%3Ctext%20y='46'%20text-anchor='middle'%20font-family='Helvetica%20Neue,Arial,sans-serif'%20font-weight='700'%20font-size='132'%20fill='%230f1317'%3EHs%3C/text%3E%3C/svg%3E");   /* the Hassium (Hs, 108) atom: steel rings and nucleus, 2-8-18-32-32-14-2 blue electrons */
+  }
+  body[data-state="idle"]      { --a: #4fb3ff; --spd: 1; }
+  body[data-state="listening"] { --a: #6fe3b4; --spd: 3; }
+  body[data-state="thinking"]  { --a: #9fb8ff; --spd: 4; }
+  body[data-state="speaking"]  { --a: #cfeaff; --spd: 5; }
+  body[data-state="booting"]   { --a: #87919c; --spd: 1; }
+  body[data-state="muted"]     { --a: #5a636d; --spd: 1; }
+  body[data-state="asking"]    { --a: #ff4d5e; --spd: 4; }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body { background: var(--brush), var(--steel); background-color: var(--bg); color: var(--text); font: 14px/1.5 var(--sans); overflow: hidden; -webkit-font-smoothing: antialiased; }
+  button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+  svg { width: 19px; height: 19px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+  .mono { font-family: var(--mono); }
+
+  #app { position: relative; height: 100%; display: flex; flex-direction: column;
+         background: radial-gradient(70% 38% at 50% -4%, color-mix(in srgb, var(--a) 11%, transparent), transparent 72%); transition: background .6s; }
+
+  /* ---- top bar ---- */
+  #top { display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 12px 0 16px; flex: none;
+         background: var(--brush), var(--plate); border-bottom: 1px solid var(--line); box-shadow: var(--bevel), 0 1px 0 rgba(0, 0, 0, .35); }
+  .brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .mark { width: 32px; height: 32px; flex: none; display: block; }
+  .name { display: flex; align-items: center; gap: 7px; font: 700 15px var(--display); color: var(--ink); letter-spacing: .18em; text-transform: uppercase; }
+  .badge { font: 600 9px var(--mono); letter-spacing: .1em; padding: 2px 6px; border-radius: 3px; color: var(--warn); border: 1px solid rgba(255, 176, 32, .45); text-transform: uppercase; }
+  .badge[hidden] { display: none; }
+  .pill { display: inline-flex; align-items: center; gap: 7px; height: 26px; padding: 0 11px; border-radius: var(--rp); background: var(--brush), var(--s2);
+          border: 1px solid var(--line); box-shadow: var(--bevel); font: 600 10.5px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--text); white-space: nowrap; }
+  .pill i { width: 7px; height: 7px; border-radius: 50%; background: var(--a); box-shadow: 0 0 8px var(--a); animation: pulse calc(2.4s / var(--spd, 1)) ease-in-out infinite; transition: background .4s; }
+  @keyframes pulse { 50% { opacity: .35; } }
+  .grow { flex: 1; }
+  #hud-state { text-transform: uppercase; }
+  .ico { width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; color: var(--muted); transition: background .15s, color .15s, transform .1s; }
+  .ico:hover { background: var(--s2); color: var(--ink); box-shadow: var(--bevel), 0 0 0 1px var(--line); }
+  .ico:active { transform: scale(.92); }
+  .ico:disabled { color: var(--faint); cursor: default; background: none; transform: none; }
+  .ico.danger { color: var(--bad); }
+  .ico.danger:hover { background: rgba(255, 77, 94, .14); color: #ff7684; }
+  #mic .slash { display: none; }
+  #mic.off { color: var(--bad); }
+  #mic.off .slash { display: block; }
+
+  /* banners that can appear above the conversation */
+  #halted, #watching { display: none; margin: 0 14px 8px; padding: 9px 12px; align-items: center; gap: 10px; border-radius: var(--r2); flex: none; font-size: 13px; }
+  #halted.on, #watching.on { display: flex; }
+  #halted { justify-content: space-between; background: rgba(255, 77, 94, .12); border: 1px solid rgba(255, 77, 94, .5); color: #ff7684; }
+  #halted button { padding: 5px 12px; border-radius: var(--rp); background: var(--s3); color: var(--ok); font-weight: 600; font-size: 12px; }
+  #watching { background: rgba(255, 176, 32, .08); border: 1px solid rgba(255, 176, 32, .35); color: var(--warn); }
+  #watching .eye { width: 8px; height: 8px; border-radius: 50%; background: var(--bad); box-shadow: 0 0 8px var(--bad); animation: pulse 1.2s infinite; flex: none; }
+  #watching .what { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  #watching button { padding: 4px 12px; border-radius: var(--rp); background: var(--s3); color: var(--bad); font-weight: 600; font-size: 12px; }
+
+  /* ---- stage: hero + conversation ---- */
+  #stage { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  #hero { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0 20px 8px; overflow: hidden; }
+  #dots { width: clamp(150px, 31vh, 236px); height: clamp(150px, 31vh, 236px); display: block; transition: width .45s var(--ease), height .45s var(--ease);
+          filter: drop-shadow(0 6px 22px rgba(0, 0, 0, .55)); }
+  .hero-text { text-align: center; }
+  #clock { font: 200 clamp(38px, 6.4vh, 52px)/1.05 var(--display); color: var(--ink); letter-spacing: -.01em; margin-top: 6px; }
+  #clock { font-variant-numeric: tabular-nums; }
+  #clock small { font-size: .36em; font-weight: 500; color: var(--muted); margin-left: 6px; letter-spacing: .06em; text-transform: uppercase; }
+  #date { font: 600 11px var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+  #status { margin-top: 12px; font-size: 13px; color: var(--muted); min-height: 20px; }
+  #status b { color: var(--ink); font-weight: 600; }
+  #chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 18px; max-width: 380px; }
+  .chip { padding: 8px 14px; border-radius: var(--rp); background: var(--brush), var(--s2); border: 1px solid var(--line); box-shadow: var(--bevel); font-size: 13px; color: var(--text); transition: border-color .15s, background .15s, color .15s, transform .1s; }
+  .chip:hover { border-color: var(--a); color: var(--ink); background: var(--s3); }
+  .chip:active { transform: scale(.96); }
+  #wave { display: none; }
+
+  /* once a conversation exists, the hero becomes a slim status strip */
+  body.has-chat #hero { flex: none; flex-direction: row; justify-content: flex-start; gap: 12px; padding: 4px 18px 10px; border-bottom: 1px solid var(--line); }
+  body.has-chat #dots { width: 40px; height: 40px; filter: none; }
+  body.has-chat .hero-text { text-align: left; }
+  body.has-chat #clock, body.has-chat #date, body.has-chat #chips { display: none; }
+  body.has-chat #status { margin: 0; font-size: 13px; }
+  body:not(.has-chat) #log { display: none; }
+
+  #log { flex: 1; min-height: 0; overflow-y: auto; padding: 16px 16px 10px; display: flex; flex-direction: column; gap: 14px; scroll-behavior: smooth; }
+  #log::-webkit-scrollbar, .scroll::-webkit-scrollbar, #ask-detail::-webkit-scrollbar { width: 6px; }
+  #log::-webkit-scrollbar-thumb, .scroll::-webkit-scrollbar-thumb { background: var(--s4); border-radius: 6px; }
+  #log > * { flex: none; }  /* never let a flex column squash the action pills and bubbles */
+  .msg { position: relative; white-space: pre-wrap; word-wrap: break-word; user-select: text; animation: rise .32s var(--ease) both; }
+  .del { position: absolute; top: -9px; right: -7px; width: 20px; height: 20px; border-radius: 50%; background: var(--s4); color: var(--text);
+         font-size: 13px; line-height: 18px; text-align: center; opacity: 0; transition: opacity .15s, background .15s; border: 1px solid var(--line2); }
+  .msg:hover .del { opacity: 1; }
+  .del:hover { background: var(--bad); color: #fff; }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+  .msg.user { align-self: flex-end; max-width: 82%; background: var(--brush), var(--s3); border: 1px solid var(--line); box-shadow: var(--bevel); border-radius: 12px 12px 3px 12px; padding: 9px 14px; color: var(--ink); }
+  .msg.user .who { display: block; font: 600 10px var(--sans); letter-spacing: .08em; color: var(--muted); text-transform: uppercase; margin-bottom: 1px; text-align: right; }
+  .msg.jarvis { align-self: flex-start; max-width: 94%; position: relative; padding-left: 34px; color: var(--ink); font-size: 15px; line-height: 1.55; }
+  .msg.jarvis::before { content: ""; position: absolute; left: 0; top: 0; width: 26px; height: 26px; background: var(--logo) center / contain no-repeat; }
+  .msg.jarvis .who { display: none; }
+  .note { align-self: center; font-size: 12px; color: var(--muted); text-align: center; padding: 3px 12px; border-radius: var(--rp); background: var(--s1); border: 1px solid var(--line); }
+  .note.err { color: #ff7684; border-color: rgba(255, 77, 94, .35); }
+  .act { align-self: flex-start; margin-left: 34px; max-width: calc(94% - 34px); font: 11.5px/1.4 var(--mono); color: var(--muted); padding: 3px 10px; border-radius: 8px;
+         background: var(--s1); border: 1px solid var(--line); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .act.allowed { color: var(--ok); border-color: rgba(111, 227, 180, .3); }
+  .act.denied { color: #ff7684; border-color: rgba(255, 77, 94, .35); }
+
+  /* ---- composer ---- */
+  #composer { flex: none; padding: 6px 14px 12px; }
+  .bar { display: flex; align-items: center; gap: 4px; height: 56px; padding: 0 7px 0 6px; background: var(--brush), var(--plate), var(--s2); border: 1px solid var(--line2); border-radius: var(--r4);
+         box-shadow: var(--bevel), 0 8px 30px rgba(0, 0, 0, .4); transition: border-color .2s, box-shadow .2s; }
+  .bar:focus-within { border-color: color-mix(in srgb, var(--a) 60%, transparent); box-shadow: var(--bevel), 0 0 0 4px color-mix(in srgb, var(--a) 14%, transparent), 0 8px 30px rgba(0, 0, 0, .4); }
+  #text { flex: 1; min-width: 0; background: none; border: 0; outline: none; color: var(--ink); font: 15px var(--sans); padding: 0 6px; caret-color: var(--a); }
+  #text::placeholder { color: var(--faint); }
+  .go { width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center; background: var(--plate), var(--a); color: var(--on-a); transition: background .4s, transform .12s, box-shadow .4s, filter .15s;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 4px 18px color-mix(in srgb, var(--a) 40%, transparent); }
+  .go svg { width: 20px; height: 20px; stroke-width: 2; }
+  .go:hover { filter: brightness(1.1); }
+  .go:active { transform: scale(.93); }
+  .go:disabled { background: var(--s4); color: var(--faint); box-shadow: none; filter: none; cursor: default; }
+  .go[hidden] { display: none; }
+  .hint { margin-top: 9px; text-align: center; font-size: 11.5px; color: var(--faint); }
+  .hint kbd { font: 500 10.5px var(--mono); color: var(--muted); background: var(--s2); border: 1px solid var(--line2); border-radius: 3px; box-shadow: var(--bevel), 0 1px 0 rgba(0, 0, 0, .5); padding: 1px 5px; }
+
+  /* ---- menu ---- */
+  #menu { display: none; position: fixed; inset: 0; z-index: 20; }
+  #menu.open { display: block; }
+  #menu .scrim { position: absolute; inset: 0; background: rgba(4, 6, 9, .55); animation: fade .2s both; }
+  #menu .sheet { position: absolute; top: 54px; right: 12px; width: min(300px, calc(100% - 24px)); background: var(--brush), var(--plate), var(--s2); border: 1px solid var(--line2); border-radius: var(--r3);
+                 padding: 6px; box-shadow: var(--bevel), 0 24px 60px rgba(0, 0, 0, .6); transform-origin: top right; animation: pop .22s var(--ease) both; }
+  @keyframes fade { from { opacity: 0; } }
+  @keyframes pop { from { opacity: 0; transform: scale(.94) translateY(-6px); } }
+  .item { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; border-radius: var(--r2); text-align: left; transition: background .12s; }
+  .item:hover { background: var(--s3); }
+  .item .ic { width: 36px; height: 36px; border-radius: 8px; background: var(--s3); box-shadow: var(--bevel); display: grid; place-items: center; color: var(--a); flex: none; }
+  .item b { display: block; font-weight: 600; color: var(--ink); font-size: 14px; line-height: 1.25; }
+  .item span { display: block; font-size: 12px; color: var(--muted); line-height: 1.3; }
+  .stats { display: flex; gap: 8px; padding: 8px 6px 4px; border-top: 1px solid var(--line); margin-top: 6px; }
+  .stats div { flex: 1; padding: 6px 10px; border-radius: var(--r1); background: var(--brush), var(--s1); box-shadow: var(--bevel); }
+  .stats small { display: block; font: 600 9.5px var(--mono); letter-spacing: .14em; color: var(--faint); text-transform: uppercase; }
+  .stats b { font-weight: 600; color: var(--ink); font-size: 14px; }
+
+  /* ---- full-screen pages: Memory, Activity, Senses, Vault ---- */
+  .drawer { position: fixed; inset: 0; z-index: 30; background: var(--brush), var(--steel); background-color: var(--bg); display: none; flex-direction: column; padding: 0 16px 12px; gap: 12px; }
+  .drawer.open { display: flex; animation: page .16s var(--ease) both; }
+  @keyframes page { from { opacity: 0; transform: translateY(14px); } }
+  .drawer .head { display: flex; justify-content: space-between; align-items: center; height: 56px; flex: none; border-bottom: 1px solid var(--line); gap: 8px; }
+  .drawer .head .mono { font: 700 15px var(--display); color: var(--ink); letter-spacing: .16em; text-transform: uppercase; }
+  .drawer .actions { display: flex; gap: 6px; }
+  .drawer .actions button { padding: 7px 14px; border-radius: var(--rp); background: var(--plate), var(--s2); border: 1px solid var(--line); box-shadow: var(--bevel); font-size: 12.5px; font-weight: 500; color: var(--text); transition: background .15s, border-color .15s; }
+  .drawer .actions button:hover { background: var(--s3); border-color: var(--line2); color: var(--ink); }
+  .drawer .actions .close { background: var(--plate), var(--a); border-color: transparent; color: var(--on-a); font-weight: 600; }
+  .drawer .sub { font-size: 12.5px; color: var(--muted); user-select: text; }
+  .scroll { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; min-height: 0; }
+  .empty { margin: auto; text-align: center; color: var(--muted); font-size: 13px; line-height: 1.8; padding: 12px; }
+  .mem { border: 1px solid var(--line); background: var(--brush), var(--s1); box-shadow: var(--bevel); border-radius: var(--r2); overflow: hidden; }
+  .mem h4 { font: 600 11.5px var(--mono); letter-spacing: .06em; color: var(--a); padding: 8px 14px; border-bottom: 1px solid var(--line); background: var(--plate), var(--s2); }
+  .mem pre { padding: 10px 14px; white-space: pre-wrap; font: 13px/1.55 var(--sans); color: var(--text); user-select: text; }
+  .secret { display: flex; align-items: center; justify-content: space-between; gap: 8px; border: 1px solid var(--line); background: var(--brush), var(--s1); box-shadow: var(--bevel); padding: 9px 14px; border-radius: var(--r2); }
+  .secret span { font-size: 13.5px; }
+  .secret .dots { color: var(--muted); letter-spacing: .2em; margin-left: 10px; }
+  .secret button { padding: 5px 12px; border-radius: var(--rp); background: var(--s3); color: var(--bad); font-size: 12px; font-weight: 600; }
+  .secret .tag { font: 600 9px var(--mono); color: var(--warn); margin-left: 8px; letter-spacing: .1em; padding: 1px 7px; border: 1px solid rgba(255, 176, 32, .4); border-radius: 3px; text-transform: uppercase; }
+  .secret .meta { color: var(--muted); font-size: 12px; margin-left: 8px; }
+  .vault-form { display: flex; flex-direction: column; gap: 8px; padding: 8px 0 4px; }
+  .input-row { display: flex; gap: 8px; }
+  .input-row > span { flex: 1; }
+  .drawer input[type=text], .drawer input[type=password] { flex: 1; min-width: 0; background: var(--s2); border: 1px solid var(--line); color: var(--ink); padding: 11px 14px; font: 14px var(--sans);
+         outline: none; border-radius: var(--r2); caret-color: var(--a); transition: border-color .15s, box-shadow .15s; }
+  .drawer input:focus { border-color: color-mix(in srgb, var(--a) 60%, transparent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--a) 14%, transparent); }
+  .drawer input::placeholder { color: var(--faint); }
+  .drawer .input-row button, .vault-form button { padding: 0 18px; border-radius: var(--r2); background: var(--s3); border: 1px solid var(--line2); color: var(--ink); font-weight: 600; font-size: 13px; }
+  .drawer .input-row button:hover { border-color: var(--a); }
+  .vsec { font: 600 11px var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--a); padding: 16px 0 6px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+  #acc-list, #vault-list, #email-box, #voice-list, #rem-list { display: flex; flex-direction: column; gap: 6px; }
+  select { background: var(--s2); border: 1px solid var(--line); color: var(--ink); border-radius: var(--r2); padding: 0 10px; font: 13px var(--sans); outline: none; }
+  select option { background: #1d2228; }
+  .check { flex: 1; display: flex; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+  .sub.err { color: #ff7684; } .sub.ok { color: var(--ok); }
+  .logrow { display: grid; grid-template-columns: 62px 22px 1fr auto; gap: 8px; align-items: baseline; font: 11.5px/1.4 var(--mono); padding: 8px 2px; border-bottom: 1px solid var(--line); }
+  .logrow .t { color: var(--muted); } .logrow .c { text-align: center; }
+  .logrow .c.A { color: var(--muted); } .logrow .c.B { color: var(--warn); } .logrow .c.C { color: var(--bad); }
+  .logrow .s { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .logrow .d { color: var(--muted); }
+  .logrow .d.deny, .logrow .d.halted { color: var(--bad); }
+  .logrow .d.once, .logrow .d.task, .logrow .d.auto-approved { color: var(--ok); }
+
+  /* ---- permission request: a centred card over a scrim ---- */
+  #ask { display: none; position: fixed; z-index: 40; left: 50%; top: 50%; width: min(400px, calc(100% - 32px)); transform: translate(-50%, -50%);
+         flex-direction: column; gap: 12px; padding: 20px; background: var(--brush), var(--plate), var(--s2); border: 1px solid var(--line2); border-radius: var(--r3);
+         box-shadow: var(--bevel), 0 0 0 100vmax rgba(4, 6, 9, .7), 0 30px 80px rgba(0, 0, 0, .7); animation: ask-in .28s var(--ease) both; }
+  @keyframes ask-in { from { opacity: 0; transform: translate(-50%, -46%) scale(.96); } }
+  #ask.open { display: flex; }
+  #ask-cat { font: 600 10.5px var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--warn); }
+  #ask.sensitive #ask-cat { color: var(--bad); }
+  #ask.sensitive { border-color: rgba(255, 77, 94, .6); }
+  #ask-summary { font: 600 20px/1.25 var(--display); color: var(--ink); }
+  #ask-detail { max-height: 120px; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: var(--r1); padding: 9px 12px;
+                font: 12px/1.45 var(--mono); white-space: pre-wrap; word-break: break-all; user-select: text; color: var(--text); }
+  #ask-hint { font-size: 12.5px; color: var(--muted); }
+  .ask-buttons { display: grid; grid-template-columns: 1fr 1.3fr; gap: 8px; margin-top: 2px; }
+  .ask-buttons button { padding: 13px 8px; border-radius: var(--r2); font-weight: 600; font-size: 14px; }
+  #deny { background: var(--s3); color: #ff7684; grid-row: 1; grid-column: 1; }
+  #allow-once { background: var(--plate), var(--ok); color: var(--on-a); grid-row: 1; grid-column: 2; }
+  #allow-task { grid-column: 1 / -1; padding: 9px; font-size: 13px; color: var(--muted); font-weight: 500; }
+  #allow-task:hover { color: var(--ink); }
+  #ask.sensitive #allow-task { display: none; }
+
+  /* ---- settings ---- */
+  .tabs { display: flex; gap: 5px; overflow-x: auto; flex: none; padding-bottom: 2px; scrollbar-width: none; }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab { padding: 7px 11px; border-radius: var(--rp); background: var(--plate), var(--s2); border: 1px solid var(--line); box-shadow: var(--bevel); font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+  .tab:hover { color: var(--ink); }
+  .tab.on { background: var(--plate), var(--a); color: var(--on-a); border-color: transparent; font-weight: 600; }
+  .srow { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 12px 2px; border-bottom: 1px solid var(--line); }
+  .srow .lbl { min-width: 0; }
+  .srow .lbl b { display: block; font-weight: 600; color: var(--ink); font-size: 14px; }
+  .srow .lbl span { display: block; font-size: 12px; color: var(--muted); line-height: 1.4; margin-top: 2px; }
+  .ctl { flex: none; display: flex; align-items: center; gap: 8px; }
+  .val { font: 600 12px var(--mono); color: var(--text); min-width: 62px; text-align: right; }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 112px; height: 4px; border-radius: 4px; background: var(--s4); outline: none; cursor: pointer; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 16px; height: 16px; border-radius: 4px; background: var(--a); border: 2px solid var(--bg); box-shadow: 0 0 6px color-mix(in srgb, var(--a) 50%, transparent); }
+  .switch { position: relative; width: 42px; height: 24px; flex: none; cursor: pointer; }
+  .switch input { opacity: 0; width: 0; height: 0; position: absolute; }
+  .switch i { position: absolute; inset: 0; border-radius: 6px; background: var(--s4); box-shadow: inset 0 1px 2px rgba(0, 0, 0, .5); transition: background .2s; }
+  .switch i::after { content: ""; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 4px; background: linear-gradient(180deg, #f2f5f8, #b9c2cc); transition: transform .2s var(--ease); }
+  .switch input:checked + i { background: var(--a); }
+  .switch input:checked + i::after { transform: translateX(18px); }
+  .sbtn { padding: 7px 13px; border-radius: var(--rp); background: var(--plate), var(--s3); border: 1px solid var(--line2); box-shadow: var(--bevel); font-size: 12.5px; font-weight: 600; color: var(--ink); white-space: nowrap; transition: border-color .15s, background .15s; }
+  .sbtn:hover { border-color: var(--a); }
+  .sbtn.primary { background: var(--plate), var(--a); color: var(--on-a); border-color: transparent; }
+  .sbtn.danger { color: #ff7684; }
+  .drawer select { height: 34px; max-width: 180px; }
+  .drawer input.small { flex: none; width: 150px; padding: 8px 12px; }
+  .drawer input[type=time], .drawer input[type=number] { background: var(--s2); border: 1px solid var(--line); color: var(--ink); border-radius: var(--r2); font: 14px var(--sans); outline: none; color-scheme: dark; }
+  .card { border: 1px solid var(--line); background: var(--brush), var(--s1); box-shadow: var(--bevel); border-radius: var(--r2); padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+  .card .top { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+  .card .top b { color: var(--ink); font-weight: 600; font-size: 14px; flex: 1 1 100%; overflow-wrap: anywhere; }
+  .chipx { font: 600 10px var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 2px 7px; border-radius: 3px; border: 1px solid var(--line2); color: var(--muted); }
+  .chipx.on { color: var(--a); border-color: color-mix(in srgb, var(--a) 50%, transparent); }
+  .chipx.ok { color: var(--ok); border-color: rgba(111, 227, 180, .4); }
+  .acts { display: flex; gap: 6px; flex-wrap: wrap; }
+  .card .mini { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 12.5px; color: var(--muted); }
+  .addbox { display: flex; flex-direction: column; gap: 8px; padding: 6px 0 4px; }
+  .snote { font-size: 12.5px; color: var(--muted); line-height: 1.5; padding: 4px 2px 6px; }
+  #toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); z-index: 70; padding: 9px 16px; border-radius: var(--rp); background: var(--s3); border: 1px solid var(--line2);
+           color: var(--ink); font-size: 13px; opacity: 0; pointer-events: none; transition: opacity .2s; max-width: calc(100% - 32px); text-align: center; }
+  #toast.on { opacity: 1; }
+  #toast.err { color: #ff7684; }
+
+  /* Animate only while Prime is busy: standby, muted or hidden = nothing redraws, so the GPU can idle. */
+  /* Only the endless decorative loops pause. Fade-ins must never pause: an element paused at the start of its fade
+     stays invisible (that hid Settings, the menu and the chat on standby). The drawings pace themselves in JS. */
+  body.still .pill i, body.still #watching .eye { animation-play-state: paused; }
+
+  /* ---- start-up greeting ---- */
+  #greet { position: fixed; inset: 0; z-index: 60; background: var(--brush), var(--steel); background-color: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+           padding: 0 28px; text-align: center; cursor: pointer; animation: fade .45s both; }
+  #greet.out { animation: greet-out .6s ease-in forwards; }
+  #greet[hidden] { display: none; }
+  .g-mark { width: 110px; height: 110px; margin-bottom: 14px; background: var(--logo) center / contain no-repeat; animation: g-mark 1.2s var(--ease) both, pulse 2.4s 1.2s ease-in-out infinite; }
+  @keyframes g-mark { from { transform: scale(.4); opacity: 0; } }
+  #greet .g-title { font: 300 clamp(30px, 8vw, 40px)/1.15 var(--display); color: var(--ink); letter-spacing: .02em; animation: g-in .8s .2s var(--ease) both; }
+  #greet .g-lines { font-size: 13.5px; line-height: 1.9; color: var(--muted); animation: g-in .8s .45s var(--ease) both; }
+  #greet .g-hint { position: absolute; bottom: 24px; font-size: 11.5px; color: var(--faint); }
+  @keyframes greet-out { to { opacity: 0; visibility: hidden; transform: scale(1.03); } }
+  @keyframes g-in { from { opacity: 0; transform: translateY(14px); } }
+</style>
+</head>
+<body data-state="booting">
+  <div id="greet" hidden>
+    <div class="g-mark"></div>
+    <div class="g-title"></div>
+    <div class="g-lines"></div>
+    <div class="g-hint">Click anywhere to continue</div>
+  </div>
+
+  <div id="app">
+    <header id="top">
+      <span class="brand">
+        <canvas id="mark" class="mark" width="120" height="120"></canvas>
+        <span class="name"><span id="brand-name">Prime</span> <span id="admin" class="badge" hidden>Admin</span></span>
+      </span>
+      <span class="pill"><i></i><span id="hud-state">Booting</span></span>
+      <span class="grow"></span>
+      <button id="new" class="ico" title="New chat (Prime starts fresh, memory is kept)"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+      <button id="stop" class="ico" title="Silence Prime"><svg viewBox="0 0 24 24"><path d="M11 5L6 9H3v6h3l5 4zM16 9l5 6M21 9l-5 6"/></svg></button>
+      <button id="menu-btn" class="ico" title="Menu"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <button id="estop" class="ico danger" title="Emergency stop (⌃⌥Esc anywhere)"><svg viewBox="0 0 24 24"><path d="M8 3h8l5 5v8l-5 5H8l-5-5V8z"/><path d="M9 9l6 6M15 9l-6 6"/></svg></button>
+    </header>
+
+    <div id="halted">
+      <span>Emergency stop is active</span>
+      <button id="resume">Resume</button>
+    </div>
+    <div id="watching">
+      <span class="eye"></span>
+      <span class="what"></span>
+      <button id="watch-stop">Stop</button>
+    </div>
+
+    <section id="stage">
+      <div id="hero">
+        <canvas id="dots" width="480" height="480"></canvas>
+        <div class="hero-text">
+          <div id="clock">--:--</div>
+          <div id="date"></div>
+          <div id="status">Initializing</div>
+        </div>
+        <div id="chips">
+          <button class="chip" data-q="What can you do?">What can you do?</button>
+          <button class="chip" data-q="What's on my screen right now?">What's on my screen?</button>
+          <button class="chip" data-q="Remind me in 10 minutes to stretch.">Remind me in 10 minutes</button>
+          <button class="chip" data-q="Open Chrome.">Open Chrome</button>
+        </div>
+        <div id="wave"></div>
+      </div>
+      <main id="log"></main>
+    </section>
+
+    <footer id="composer">
+      <div class="bar">
+        <button id="mic" class="ico" disabled title="Mute microphone"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/><path class="slash" d="M4 4l16 16"/></svg></button>
+        <input id="text" type="text" placeholder="Ask Prime anything..." autocomplete="off">
+        <button id="talk" class="go" disabled title="Talk (⌃Space)"><svg viewBox="0 0 24 24"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg></button>
+        <button id="send" class="go" hidden title="Send"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+      </div>
+      <div class="hint">Say <kbd>Prime</kbd> &nbsp;·&nbsp; clap twice &nbsp;·&nbsp; <kbd>⌃</kbd> <kbd>⌥</kbd> <kbd>J</kbd></div>
+    </footer>
+  </div>
+
+  <div id="menu">
+    <div class="scrim"></div>
+    <div class="sheet">
+      <button id="settings-btn" class="item"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></span><span><b>Settings</b><span>Voice, mics, people, name and more</span></span></button>
+      <button id="mem" class="item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5zM3 13l9 5 9-5"/></svg></span><span><b>Memory</b><span>Notes and skills Prime has learned</span></span></button>
+      <button id="log-btn" class="item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg></span><span><b>Activity</b><span>Every action, and what you approved</span></span></button>
+      <button id="senses-btn" class="item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span><span><b>Senses</b><span>Voices, reminders and camera</span></span></button>
+      <button id="vault" class="item"><span class="ic"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 118 0v4"/></svg></span><span><b>Vault</b><span>Logins and secrets, encrypted</span></span></button>
+      <button id="clear-view" class="item"><span class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></span><span><b>Clear view</b><span>Remove the chat from the screen. Memory is kept</span></span></button>
+      <div class="stats">
+        <div><small>Mic</small><b id="hud-mic">--</b></div>
+        <div><small>Tasks</small><b id="hud-jobs">0</b></div>
+      </div>
+    </div>
+  </div>
+
+  <section id="ask">
+    <span id="ask-cat">Permission request</span>
+    <div id="ask-summary"></div>
+    <div id="ask-detail"></div>
+    <div id="ask-hint">Say "yes", "yes to all" or "no", or choose:</div>
+    <div class="ask-buttons">
+      <button id="deny">Deny</button>
+      <button id="allow-once">Allow once</button>
+      <button id="allow-task">Allow for this task</button>
+    </div>
+  </section>
+
+  <section id="memory" class="drawer">
+    <div class="head">
+      <span class="mono">Memory</span>
+      <div class="actions">
+        <button id="mem-open">Open folder</button>
+        <button class="close">Done</button>
+      </div>
+    </div>
+    <div id="mem-path" class="sub"></div>
+    <div id="mem-list" class="scroll"></div>
+  </section>
+
+  <section id="logbox" class="drawer">
+    <div class="head">
+      <span class="mono">Activity</span>
+      <div class="actions"><button id="log-refresh">Refresh</button><button class="close">Done</button></div>
+    </div>
+    <div class="sub">Every action Prime requested, its category (A routine, B consequential, C sensitive)
+      and what happened. Saved daily in the logs folder of Prime's memory (~/PrimeMemory/logs).</div>
+    <div id="log-list" class="scroll"></div>
+  </section>
+
+  <section id="sensesbox" class="drawer">
+    <div class="head">
+      <span class="mono">Senses</span>
+      <div class="actions"><button id="senses-refresh">Refresh</button><button class="close">Done</button></div>
+    </div>
+    <div class="scroll">
+      <div class="vsec mono">Voices</div>
+      <div class="sub">Prime knows these people by voice; only the owner's spoken "yes" approves actions. Add someone
+        by saying "Prime, learn a new voice, this is &lt;name&gt;" (the first time: "Prime, learn my voice, I'm &lt;name&gt;").
+        Only voiceprints are kept, never recordings.</div>
+      <div id="voice-list"></div>
+      <div class="vsec mono">Reminders</div>
+      <div id="rem-list"></div>
+      <div class="vsec mono">Camera</div>
+      <div id="cam-box" class="sub"></div>
+    </div>
+  </section>
+
+  <section id="vaultbox" class="drawer">
+    <div class="head">
+      <span class="mono">Secure vault</span>
+      <div class="actions"><button class="close">Done</button></div>
+    </div>
+    <div class="sub">Encrypted on this Mac; the key lives in your macOS Keychain. Prime sees services and usernames only;
+      passwords and codes are typed into apps without ever reaching Claude.</div>
+    <div class="scroll">
+      <div class="vsec mono">Logins</div>
+      <div id="acc-list"></div>
+      <div class="vault-form">
+        <div class="input-row">
+          <input id="a-service" type="text" placeholder="Service, e.g. valorant" autocomplete="off">
+          <input id="a-user" type="text" placeholder="Username / email" autocomplete="off">
+        </div>
+        <div class="input-row">
+          <input id="a-pass" type="password" placeholder="Password" autocomplete="new-password">
+          <select id="a-2fa" title="How this account's verification codes arrive">
+            <option value="none">No 2FA</option>
+            <option value="email">Code by email</option>
+            <option value="app">Authenticator app</option>
+            <option value="phone">Phone / SMS</option>
+          </select>
+        </div>
+        <div class="input-row">
+          <label class="check"><input id="a-usual" type="checkbox" checked> Usual account for this service</label>
+          <button id="a-save">Add login</button>
+        </div>
+        <div id="a-msg" class="sub"></div>
+      </div>
+
+      <div class="vsec mono">Email for 2FA codes</div>
+      <div id="email-box"></div>
+      <div id="email-form" class="vault-form">
+        <div class="sub">Gmail: create an app password (Google Account &rarr; Security &rarr; 2-Step Verification &rarr;
+          App passwords) and paste it here, not your normal password. Prime only reads code emails, read-only.</div>
+        <input id="e-addr" type="text" placeholder="you@gmail.com" autocomplete="off">
+        <div class="input-row">
+          <input id="e-pass" type="password" placeholder="App password" autocomplete="new-password">
+          <input id="e-host" type="text" placeholder="IMAP server (auto)" autocomplete="off">
+        </div>
+        <div class="input-row"><span></span><button id="e-save">Save &amp; test</button></div>
+        <div id="e-msg" class="sub"></div>
+      </div>
+
+      <div class="vsec mono">Other secrets</div>
+      <div id="vault-list"></div>
+      <div class="vault-form">
+        <input id="v-name" type="text" placeholder="Name, e.g. wifi" autocomplete="off">
+        <div class="input-row">
+          <input id="v-value" type="password" placeholder="Secret" autocomplete="new-password">
+          <button id="v-save">Save</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="settingsbox" class="drawer">
+    <div class="head">
+      <span class="mono">Settings</span>
+      <div class="actions"><button class="close">Done</button></div>
+    </div>
+    <div class="tabs" id="set-tabs"></div>
+    <div class="scroll" id="set-body"></div>
+  </section>
+  <div id="toast"></div>
+
+<script>
+  const $ = id => document.getElementById(id);
+  const api = () => window.pywebview.api;
+  let micOn = false, micReady = false, state = "booting", asking = false, lastAct = null, dotState = "booting", dirty = true;
+
+  const LABELS = {
+    booting: "Initializing",
+    idle: () => micOn ? 'Standby &middot; say <b>"Prime"</b> or clap twice' : "Mic off &middot; type or press Talk",
+    listening: () => asking ? "<b>Listening</b> &middot; yes or no?" : "<b>Listening</b>",
+    thinking: "<b>Processing</b>",
+    speaking: "<b>Speaking</b>",
+  };
+
+  function render() {
+    const muted = state === "idle" && micReady && !micOn;
+    const look = asking && state !== "speaking" && state !== "listening" ? "asking" : (muted ? "muted" : state);
+    document.body.dataset.state = look;
+    dotState = look; dirty = true;
+    document.body.classList.toggle("still", document.hidden || look === "idle" || look === "muted");
+    $("hud-state").textContent = { idle: "Standby", muted: "Muted", asking: "Awaiting" }[look] || look;
+    $("hud-mic").textContent = micReady ? (micOn ? "Live" : "Off") : "--";
+    const label = asking && state === "thinking" ? "<b>Awaiting your permission</b>" : (LABELS[state] || state);
+    $("status").innerHTML = typeof label === "function" ? label() : label;
+    $("mic").title = micOn ? "Mute microphone" : "Unmute microphone";
+    $("mic").classList.toggle("off", micReady && !micOn);
+    $("mic").disabled = $("talk").disabled = !micReady;
+  }
+
+  function add(cls, text, who, id) {
+    $("empty")?.remove();
+    if (cls.startsWith("msg")) document.body.classList.add("has-chat");
+    const el = document.createElement("div");
+    el.className = cls;
+    if (who) {
+      const tag = document.createElement("span");
+      tag.className = "who mono";
+      tag.textContent = who;
+      el.appendChild(tag);
+    }
+    el.appendChild(document.createTextNode(text));
+    el.title = text;
+    if (cls.startsWith("msg")) {  // remove from view only: the message stays stored and memory is untouched
+      const x = document.createElement("button");
+      x.className = "del"; x.textContent = "×"; x.title = "Remove from view (memory is kept)";
+      x.onclick = e => {
+        e.stopPropagation();
+        el.remove();
+        if (id) api().hide_message(id);
+        if (!$("log").querySelector(".msg")) document.body.classList.remove("has-chat");
+      };
+      el.appendChild(x);
+    }
+    $("log").appendChild(el);
+    $("log").scrollTop = $("log").scrollHeight;
+    return el;
+  }
+
+  // Called from Python.
+  window.onEvent = (kind, data) => {
+    if (kind === "state") { state = data; render(); }
+    else if (kind === "mic") { micReady = true; micOn = data; render(); }
+    else if (kind === "message") {
+      data.role === "user" ? add("msg user", data.text, data.speaker || "You", data.id) : add("msg jarvis", data.text, "Prime", data.id);
+    }
+    else if (kind === "cleared") clearView();
+    else if (kind === "renamed") setName(data);
+    else if (kind === "open_settings") openSettings();
+    else if (kind === "mic_changed") onMicChanged(data);
+    else if (kind === "people_changed") refreshSettings("people");
+    else if (kind === "activity") lastAct = add("act", "▸ " + data);
+    else if (kind === "halted") {
+      $("halted").classList.toggle("on", data);
+    }
+    else if (kind === "approval") {
+      asking = true;
+      const sensitive = data.category === "C";
+      $("ask").classList.toggle("sensitive", sensitive);
+      $("ask-cat").textContent = sensitive ? `Sensitive action (C): ${data.reason}` : `Permission request (B): ${data.reason}`;
+      $("allow-once").textContent = sensitive ? "Confirm" : "Allow once";
+      $("ask-hint").textContent = sensitive ? "Voice can't approve this. Click Confirm only if you're sure."
+                                            : 'Say "yes", "yes to all" or "no", or choose:';
+      $("ask-summary").textContent = "Prime wants to " + data.summary;
+      $("ask-detail").textContent = data.detail || "";
+      $("ask-detail").style.display = data.detail ? "" : "none";
+      $("ask").classList.add("open");
+      render();
+    }
+    else if (kind === "approval_done") {
+      asking = false;
+      $("ask").classList.remove("open");
+      if (lastAct) {
+        lastAct.classList.add(data === "deny" ? "denied" : "allowed");
+        lastAct.textContent += data === "deny" ? "  [denied]" : data === "task" ? "  [allowed for task]" : "  [allowed]";
+      }
+      render();
+    }
+    else if (kind === "watching") {
+      $("watching").classList.toggle("on", !!data);
+      $("watching").querySelector(".what").textContent = data ? "Watching: " + data : "";
+      if ($("sensesbox").classList.contains("open")) showSenses();
+    }
+    else if (kind === "jobs") $("hud-jobs").textContent = data.length ? `${data.length} running` : "0";
+    else if (kind === "note") add("note", data);
+    else if (kind === "error") add("note err", data);
+  };
+
+  function send() {
+    const text = $("text").value.trim();
+    if (!text) return;
+    $("text").value = "";
+    syncComposer();
+    api().send(text);
+  }
+
+  async function showMemory() {
+    const files = await api().memory();
+    const list = $("mem-list");
+    list.innerHTML = "";
+    if (!files.length) {
+      list.innerHTML = '<div class="empty">Nothing remembered yet. Prime saves what it learns about you as you talk.</div>';
+    }
+    for (const f of files) {
+      const box = document.createElement("div");
+      box.className = "mem";
+      const h = document.createElement("h4"); h.textContent = f.name;
+      const p = document.createElement("pre"); p.textContent = f.text.trim() || "(empty)";
+      box.append(h, p);
+      list.appendChild(box);
+    }
+    $("memory").classList.add("open");
+  }
+
+  function row(parts, onDelete, confirmText) {
+    const el = document.createElement("div");
+    el.className = "secret";
+    const label = document.createElement("span");
+    for (const [cls, text] of parts) {
+      const s = cls ? document.createElement("span") : document.createTextNode(text);
+      if (cls) { s.className = cls; s.textContent = text; }
+      label.appendChild(s);
+    }
+    const del = document.createElement("button");
+    del.className = "mono"; del.textContent = "Delete";
+    del.onclick = async () => { if (confirm(confirmText)) { await onDelete(); showVault(); } };
+    el.append(label, del);
+    return el;
+  }
+
+  const TWOFA = { none: "no 2FA", email: "code by email", app: "authenticator", phone: "phone/SMS" };
+
+  async function showVault() {
+    const data = await api().vault_data();
+
+    const accs = $("acc-list");
+    accs.innerHTML = "";
+    if (!data.accounts.length) accs.innerHTML = '<div class="empty">No logins saved yet.</div>';
+    for (const a of data.accounts) {
+      const parts = [[null, `${a.service} · ${a.username}`]];
+      if (a.usual) parts.push(["tag mono", "usual"]);
+      parts.push(["meta", TWOFA[a.twofa] || a.twofa]);
+      accs.appendChild(row(parts, () => api().vault_delete_account(a.id), `Delete the ${a.service} login for ${a.username}?`));
+    }
+
+    const box = $("email-box");
+    box.innerHTML = "";
+    if (data.email) {
+      box.appendChild(row([[null, data.email.address], ["meta", data.email.host]],
+        () => api().vault_clear_email(), "Remove the 2FA email account?"));
+    }
+    $("email-form").style.display = data.email ? "none" : "";
+
+    const secrets = $("vault-list");
+    secrets.innerHTML = "";
+    if (!data.secrets.length) secrets.innerHTML = '<div class="empty">None.</div>';
+    for (const name of data.secrets) {
+      secrets.appendChild(row([[null, name], ["dots", "••••••"]],
+        () => api().vault_delete(name), `Delete the secret "${name}"?`));
+    }
+    $("vaultbox").classList.add("open");
+  }
+
+  async function saveAccount() {
+    const err = await api().vault_add_account($("a-service").value, $("a-user").value, $("a-pass").value,
+                                              $("a-usual").checked, $("a-2fa").value);
+    $("a-msg").textContent = err;
+    $("a-msg").className = "sub" + (err ? " err" : "");
+    if (!err) { $("a-service").value = $("a-user").value = $("a-pass").value = ""; showVault(); }
+  }
+
+  async function saveEmail() {
+    $("e-msg").textContent = "Connecting...";
+    $("e-msg").className = "sub";
+    const err = await api().vault_set_email($("e-addr").value, $("e-pass").value, $("e-host").value);
+    $("e-msg").textContent = err || "Connected. Prime can now read verification codes.";
+    $("e-msg").className = "sub " + (err ? "err" : "ok");
+    $("e-pass").value = "";
+    if (!err) showVault();
+  }
+
+  async function saveSecret() {
+    const name = $("v-name").value.trim(), value = $("v-value").value;
+    if (!name || !value) return;
+    await api().vault_add(name, value);
+    $("v-name").value = ""; $("v-value").value = "";
+    showVault();
+  }
+
+  async function showLog() {
+    const entries = await api().activity_log();
+    const list = $("log-list");
+    list.innerHTML = "";
+    if (!entries.length) list.innerHTML = '<div class="empty">No activity yet.</div>';
+    for (const e of entries.reverse()) {
+      const r = document.createElement("div");
+      r.className = "logrow";
+      const cells = [["t", e.time.slice(11, 19)], ["c " + e.category, e.category],
+                     ["s", e.summary], ["d " + e.decision, e.decision]];
+      for (const [cls, text] of cells) {
+        const s = document.createElement("span");
+        s.className = cls; s.textContent = text; s.title = text;
+        r.appendChild(s);
+      }
+      list.appendChild(r);
+    }
+    $("logbox").classList.add("open");
+  }
+
+  function when(due) {
+    const d = new Date(due), today = new Date();
+    const tomorrow = new Date(today); tomorrow.setDate(today.getDate() + 1);
+    const day = d.toDateString() === today.toDateString() ? "Today"
+              : d.toDateString() === tomorrow.toDateString() ? "Tomorrow"
+              : d.toLocaleDateString([], { weekday: "short", day: "numeric", month: "short" });
+    return `${day} ${d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+  }
+
+  // Delete-style rows in the Senses panel re-render it (not the vault).
+  function senseRow(parts, button, onClick, confirmText) {
+    const el = row(parts, async () => {}, "");
+    const b = el.querySelector("button");
+    b.textContent = button;
+    b.onclick = async () => { if (!confirmText || confirm(confirmText)) { await onClick(); showSenses(); } };
+    return el;
+  }
+
+  async function showSenses() {
+    const data = await api().senses();
+
+    const voices = $("voice-list");
+    voices.innerHTML = "";
+    if (data.voices === null) voices.innerHTML = '<div class="empty">Voice recognition is off (no microphone, or the model is missing; see the app log).</div>';
+    else if (!data.voices.length) voices.innerHTML = '<div class="empty">No voices yet. Say "Prime, learn my voice, I\'m &lt;your name&gt;".</div>';
+    else for (const v of data.voices) {
+      const parts = [[null, v.name]];
+      if (v.owner) parts.push(["tag mono", "owner"]);
+      voices.appendChild(senseRow(parts, "Forget", () => api().forget_voice(v.name),
+        `Forget ${v.name}'s voice?` + (v.owner ? " They are the owner: the next voice enrolled becomes owner." : "")));
+    }
+
+    const rems = $("rem-list");
+    rems.innerHTML = "";
+    if (!data.reminders.length) rems.innerHTML = '<div class="empty">No upcoming reminders. Try "remind me in 10 minutes to stretch".</div>';
+    for (const r of data.reminders) {
+      rems.appendChild(senseRow([["tag mono", when(r.due)], [null, "  " + r.text]], "Cancel",
+        () => api().cancel_reminder(r.id), null));
+    }
+
+    $("cam-box").textContent = data.watching
+      ? `On: watching for "${data.watching}". Use Stop on the main screen, or say "stop watching".`
+      : 'Off. Prime only uses it when asked ("can you see me?", "tell me when I stand up").';
+    $("sensesbox").classList.add("open");
+  }
+
+  function clearView() {
+    $("log").innerHTML = "";
+    document.body.classList.remove("has-chat");
+    lastAct = null;
+  }
+  $("clear-view").onclick = async () => {
+    if (!confirm("Clear the conversation from view?\n\nNothing is deleted: Prime's memory and notes are not touched.")) return;
+    await api().clear_view();
+    clearView();
+  };
+
+  const closeDrawers = () => document.querySelectorAll(".drawer").forEach(d => d.classList.remove("open"));
+
+  $("send").onclick = send;
+  $("text").addEventListener("keydown", e => { if (e.key === "Enter") send(); });
+  $("mic").onclick = async () => { micOn = await api().toggle_mic(); render(); };
+  $("talk").onclick = () => api().talk();
+  $("stop").onclick = () => api().stop();
+  $("new").onclick = () => api().new_chat();
+  $("mem").onclick = showMemory;
+  $("mem-open").onclick = () => api().open_memory();
+  $("vault").onclick = showVault;
+  $("v-save").onclick = saveSecret;
+  $("a-save").onclick = saveAccount;
+  $("e-save").onclick = saveEmail;
+  $("v-value").addEventListener("keydown", e => { if (e.key === "Enter") saveSecret(); });
+  document.querySelectorAll(".drawer .close").forEach(b => b.onclick = closeDrawers);
+  $("estop").onclick = () => api().emergency_stop();
+  $("resume").onclick = () => api().resume();
+  $("log-btn").onclick = showLog;
+  $("senses-btn").onclick = showSenses;
+  $("senses-refresh").onclick = showSenses;
+  $("watch-stop").onclick = () => api().stop_watching();
+  $("log-refresh").onclick = showLog;
+  $("allow-once").onclick = () => api().decide("once");
+  $("allow-task").onclick = () => api().decide("task");
+  $("deny").onclick = () => api().decide("deny");
+  document.addEventListener("keydown", e => {
+    if (e.ctrlKey && e.code === "Space") { e.preventDefault(); if (micReady) api().talk(); }
+    if (e.key === "Escape") closeDrawers();
+    if (e.ctrlKey && e.key === ",") { e.preventDefault(); openSettings(); }
+  });
+
+  // waveform bars, each with its own height and timing
+  for (let i = 0; i < 36; i++) {
+    const b = document.createElement("i");
+    const mid = 1 - Math.abs(i - 17.5) / 18;
+    b.style.setProperty("--h", (0.25 + mid * 0.75 * (0.6 + Math.random() * 0.4)).toFixed(2));
+    b.style.animationDelay = (-Math.random() * 1.4).toFixed(2) + "s";
+    $("wave").appendChild(b);
+  }
+
+
+  window.addEventListener("pywebviewready", async () => {
+    const info = await api().ready();
+    $("admin").hidden = !info.admin;
+    if (info.name) setName(info.name);
+    setTimeout(prefetchSettings, 1500);                         // after start-up has settled
+    const past = await api().history();
+    if (past.length) {
+      for (const m of past) m.role === "user" ? add("msg user", m.text, "You", m.id) : add("msg jarvis", m.text, "Prime", m.id);
+      add("note", "— earlier conversation above —");
+    }
+    $("mem-path").textContent = info.memoryDir;
+    if (info.greeting) {
+      // In the background (started at login) the greeting waits until the window first opens.
+      const greet = () => {
+        const g = $("greet");
+        g.querySelector(".g-title").textContent = info.greeting.title;
+        g.querySelector(".g-lines").innerHTML = info.greeting.lines.map(l => l.replace(/[<>&]/g, "")).join("<br>");
+        g.hidden = false;
+        const close = () => { g.classList.add("out"); setTimeout(() => { g.hidden = true; }, 750); };
+        g.onclick = close;
+        setTimeout(close, 6000);
+      };
+      if (!info.background || !document.hidden) greet();
+      else document.addEventListener("visibilitychange", function once() {
+        if (!document.hidden) { document.removeEventListener("visibilitychange", once); greet(); }
+      });
+    }
+    render();
+  });
+
+  // ---- layout additions: menu, composer, suggestions, clock, dot-matrix display ----
+  const menu = $("menu");
+  const closeMenu = () => menu.classList.remove("open");
+  $("menu-btn").onclick = () => menu.classList.toggle("open");
+  menu.querySelector(".scrim").onclick = closeMenu;
+  menu.querySelectorAll(".item").forEach(b => b.addEventListener("click", closeMenu));
+  document.addEventListener("keydown", e => { if (e.key === "Escape") closeMenu(); });
+  window.syncComposer = () => { const has = !!$("text").value.trim(); $("send").hidden = !has; $("talk").hidden = has; };
+  $("text").addEventListener("input", syncComposer);
+  document.querySelectorAll(".chip").forEach(c => c.onclick = () => api().send(c.dataset.q));
+
+  function tickClock() {
+    const d = new Date();
+    $("clock").innerHTML = new Intl.DateTimeFormat([], { hour: "numeric", minute: "2-digit" }).formatToParts(d)
+      .map(p => p.type === "dayPeriod" ? `<small>${p.value}</small>` : p.value).join("");
+    $("date").textContent = d.toLocaleDateString([], { weekday: "long", day: "numeric", month: "long" });
+  }
+  tickClock();
+  setInterval(tickClock, 1000);
+
+  // The display: the Hassium atom (Hs, 108). Seven steel shells carry 2-8-18-32-32-14-2 electrons round a steel
+  // nucleus. While Prime is busy the shells turn, the inner ones quicker and neighbours in opposite directions;
+  // while it listens or speaks the electrons glow with the real loudness of your voice or of its own. On standby
+  // and muted it holds perfectly still. The same atom is drawn big, in the chat status strip and in the header.
+  const cv = $("dots"), cx = cv.getContext("2d");
+  const PAL = { idle: "#4fb3ff", listening: "#6fe3b4", thinking: "#9fb8ff", speaking: "#cfeaff", booting: "#87919c",
+                muted: "#5a636d", asking: "#ff4d5e" };
+  const SPIN = { idle: 0, muted: 0, booting: .25, listening: .55, thinking: 1.6, speaking: .8, asking: .9 };   // radians a second
+  const SHELLS = [2, 8, 18, 32, 32, 14, 2];
+  const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+  const mix = (a, b, k) => a.map((v, i) => Math.round(v + (b[i] - v) * k));
+
+  // the two pictures every electron is made of, repainted only when the colour changes
+  let sprites = null, spriteKey = "";
+  function makeSprites(hex) {
+    const c = rgb(hex), S = 64, make = paint => { const e = document.createElement("canvas"); e.width = e.height = S; paint(e.getContext("2d"), S / 2); return e; };
+    return {
+      ball: make((g, r) => {
+        const q = g.createRadialGradient(r * .7, r * .6, r * .05, r, r, r);
+        q.addColorStop(0, "#ffffff"); q.addColorStop(.45, rgba(mix(c, [255, 255, 255], .45), 1)); q.addColorStop(1, rgba(mix(c, [0, 0, 0], .2), 1));
+        g.fillStyle = q; g.beginPath(); g.arc(r, r, r * .97, 0, 6.2832); g.fill();
+      }),
+      glow: make((g, r) => { const q = g.createRadialGradient(r, r, 0, r, r, r); q.addColorStop(0, rgba(c, .9)); q.addColorStop(1, rgba(c, 0)); g.fillStyle = q; g.fillRect(0, 0, 2 * r, 2 * r); }),
+    };
+  }
+
+  let micLevel = 0, voiceLevel = 0, drawnCompact = null;
+  const shellAngle = SHELLS.map(() => 0);
+  let atomAt = -1, atomLast = 0;
+  function atomFrame(now) {                                       // turn the shells once per frame, however many atoms draw
+    if (now === atomAt) return;
+    atomAt = now;
+    const dt = Math.min(.1, Math.max(0, now / 1000 - atomLast));
+    atomLast = now / 1000;
+    const base = SPIN[dotState] || 0;
+    if (!base) return;                                            // standby and muted: hold still
+    const boost = dotState === "listening" ? 1 + 2.5 * micLevel : dotState === "speaking" ? 1 + 2 * voiceLevel : 1;
+    for (let i = 0; i < SHELLS.length; i++) shellAngle[i] += dt * base * boost * (1.5 - i * .14) * (i % 2 ? -1 : 1);
+  }
+  function atomLevel(t) {                                         // how brightly the electrons glow
+    return dotState === "listening" ? micLevel
+         : dotState === "speaking" ? Math.max(voiceLevel, .12)
+         : dotState === "thinking" ? .22
+         : dotState === "asking" ? .3 + .2 * Math.sin(t * 5)
+         : dotState === "booting" ? .08 : 0;
+  }
+  function drawAtom(g, W, now, small) {
+    const t = now / 1000, k = W / 1024, mid = W / 2, col = PAL[dotState] || PAL.idle, lv = Math.max(0, Math.min(1, atomLevel(t)));
+    if (spriteKey !== col) { sprites = makeSprites(col); spriteKey = col; }
+    // at icon size: a bigger nucleus, thicker rings and larger electrons, so it still reads at 32 px
+    const nuc = (small ? 190 : 118) * k, r0 = (small ? 236 : 172) * k, gap = (small ? 40 : 50) * k, er = (small ? 26 : 11) * k;
+    const each = fn => SHELLS.forEach((n, i) => {
+      const r = r0 + i * gap, off = -Math.PI / 2 + Math.PI / n + shellAngle[i];
+      for (let j = 0; j < n; j++) { const a = off + j * 2 * Math.PI / n; fn(mid + r * Math.cos(a), mid + r * Math.sin(a)); }
+    });
+    g.clearRect(0, 0, W, W);
+    g.lineWidth = (small ? 12 : 4) * k;
+    g.strokeStyle = `rgba(190,202,214,${(.4 + .25 * lv).toFixed(3)})`;
+    for (let i = 0; i < SHELLS.length; i++) { g.beginPath(); g.arc(mid, mid, r0 + i * gap, 0, 6.2832); g.stroke(); }
+    if (lv > .02) {                                               // the glow follows the sound
+      const gs = er * (small ? 2 + 2 * lv : 5 + 7 * lv);           // at icon size the electrons sit close: a tighter halo
+      g.globalCompositeOperation = "lighter";
+      g.globalAlpha = Math.min(1, .25 + .75 * lv) * (small ? .5 : 1);
+      each((x, y) => g.drawImage(sprites.glow, x - gs / 2, y - gs / 2, gs, gs));
+      g.globalCompositeOperation = "source-over";
+    }
+    g.globalAlpha = dotState === "muted" ? .55 : 1;
+    each((x, y) => g.drawImage(sprites.ball, x - er, y - er, 2 * er, 2 * er));
+    g.globalAlpha = 1;
+    const q = g.createRadialGradient(mid - nuc * .25, mid - nuc * .35, nuc * .05, mid, mid, nuc * 1.15);
+    q.addColorStop(0, "#e4e9ee"); q.addColorStop(.55, "#8e98a3"); q.addColorStop(1, "#3b424b");
+    g.fillStyle = q; g.beginPath(); g.arc(mid, mid, nuc, 0, 6.2832); g.fill();
+    g.lineWidth = (small ? 16 : 6) * k; g.strokeStyle = col; g.stroke();
+    g.fillStyle = "#0f1317"; g.textAlign = "center"; g.textBaseline = "middle";
+    g.font = `700 ${(nuc * 1.08).toFixed(1)}px -apple-system, "SF Pro Display", "Helvetica Neue", sans-serif`;
+    g.fillText("Hs", mid, mid + nuc * .06);
+  }
+
+  function draw(now) {
+    const compact = document.body.classList.contains("has-chat");
+    drawnCompact = compact;
+    atomFrame(now);
+    drawAtom(cx, cv.width, now, compact);                        // in a chat the status icon is the small atom
+  }
+
+  // The header mark: the same atom at icon size, moving with what Prime is doing.
+  const markCv = $("mark"), markCx = markCv.getContext("2d");
+  function drawMark(now) { atomFrame(now); drawAtom(markCx, markCv.width, now, true); }
+
+  function tick(now) {
+    if (document.hidden) { setTimeout(() => requestAnimationFrame(tick), 600); return; }          // window hidden: nothing to draw
+    if (document.querySelector(".drawer.open")) {                                                  // a page covers it: nothing to draw
+      dirty = true;
+      setTimeout(() => requestAnimationFrame(tick), 300);
+      return;
+    }
+    if (dotState === "muted" || dotState === "idle") {                                             // standby, muted: one still frame per change
+      if (dirty || drawnCompact !== document.body.classList.contains("has-chat")) { draw(now); drawMark(now); dirty = false; }
+      setTimeout(() => requestAnimationFrame(tick), 400);
+      return;
+    }
+    draw(now);
+    drawMark(now);
+    dirty = false;
+    if (dotState === "booting") setTimeout(() => requestAnimationFrame(tick), 50);                    // slow turn, about 20 fps
+    else requestAnimationFrame(tick);                                                                 // busy: full speed
+  }
+  requestAnimationFrame(tick);
+
+  // real sound levels from Python (your voice, Prime's voice), only while they matter
+  setInterval(async () => {
+    if (document.hidden || !window.pywebview || !(dotState === "listening" || dotState === "speaking")) {
+      micLevel *= .8; voiceLevel *= .8;
+      return;
+    }
+    try {
+      const v = await api().sound_levels();
+      micLevel += (v.mic - micLevel) * .7;
+      voiceLevel += (v.voice - voiceLevel) * .7;
+    } catch (e) { /* the page can load before the bridge is ready */ }
+  }, 80);
+
+
+  // ---- Settings: every change is checked, saved and applied at once ----
+  let S = null, setTab = "voice";
+  const TABS = [["voice", "Voice"], ["mics", "Mics"], ["people", "People"], ["you", "You"], ["behaviour", "Behaviour"], ["system", "System"]];
+
+  function h(tag, props = {}, ...kids) {
+    const el = document.createElement(tag);
+    for (const [k, v] of Object.entries(props)) {
+      if (k === "class") el.className = v;
+      else if (k === "text") el.textContent = v;
+      else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
+      else if (v !== undefined && v !== null && v !== false) el.setAttribute(k, v === true ? "" : v);
+    }
+    for (const kid of kids.flat()) if (kid !== null && kid !== undefined && kid !== false) el.append(kid instanceof Node ? kid : String(kid));
+    return el;
+  }
+  let toastTimer;
+  function toast(msg, err) {
+    const t = $("toast");
+    t.textContent = msg;
+    t.classList.toggle("err", !!err);
+    t.classList.add("on");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("on"), 1800);
+  }
+  async function setValue(key, value) {
+    const r = await api().settings_set(key, value);
+    if (!r.ok) { toast(r.error, true); return false; }
+    S.values[key] = r.value;
+    toast("Saved");
+    return true;
+  }
+  const srow = (title, hint, ...ctl) => h("div", { class: "srow" },
+    h("div", { class: "lbl" }, h("b", { text: title }), hint ? h("span", { text: hint }) : null), h("div", { class: "ctl" }, ...ctl));
+  const section = title => h("div", { class: "vsec mono", text: title });
+  const note = text => h("div", { class: "snote", text });
+  const signed = unit => v => (v > 0 ? "+" : "") + v + unit;
+
+  function toggle(key, on = true, off = false) {
+    const i = h("input", { type: "checkbox" });
+    i.checked = S.values[key] === on;
+    i.onchange = () => setValue(key, i.checked ? on : off);
+    return h("label", { class: "switch" }, i, h("i"));
+  }
+  function slider(key, min, max, step, fmt) {
+    const v = h("span", { class: "val", text: fmt(S.values[key]) });
+    const r = h("input", { type: "range", min, max, step });
+    r.value = S.values[key];
+    let t;
+    r.oninput = () => { v.textContent = fmt(+r.value); clearTimeout(t); t = setTimeout(() => setValue(key, +r.value), 350); };
+    return [r, v];
+  }
+  function choice(key, options) {
+    const s = h("select", {}, ...options.map(([val, label]) => { const o = h("option", { value: val, text: label }); o.selected = S.values[key] === val; return o; }));
+    s.onchange = () => setValue(key, s.value);
+    return s;
+  }
+  function textbox(key, placeholder) {
+    const i = h("input", { type: "text", class: "small", placeholder });
+    i.value = S.values[key];
+    i.onchange = async () => { if (!(await setValue(key, i.value))) i.value = S.values[key]; else i.value = S.values[key]; };
+    i.onkeydown = e => { if (e.key === "Enter") i.blur(); };
+    return i;
+  }
+  function numberbox(key, min, max) {
+    const i = h("input", { type: "number", class: "small", min, max });
+    i.value = S.values[key];
+    i.onchange = async () => { await setValue(key, Number(i.value)); i.value = S.values[key]; };
+    return i;
+  }
+  function timebox(key) {
+    const i = h("input", { type: "time", class: "small" });
+    i.value = S.values[key];
+    i.onchange = async () => { if (!(await setValue(key, i.value))) i.value = S.values[key]; };
+    return i;
+  }
+  function delayed(fn) { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), 350); }; }
+
+  function voiceTab() {
+    const play = kind => api().preview_voice(kind, kind === "telugu" ? S.values.telugu_voice : S.values.voice, S.values.speech_rate, S.values.speech_pitch);
+    return [
+      section("Prime's voice"),
+      srow("English voice", "How it sounds when it speaks English.", choice("voice", Object.entries(S.voices)), h("button", { class: "sbtn", text: "Play", onclick: () => play("english") })),
+      srow("Telugu voice", "Used when you speak Telugu.", choice("telugu_voice", Object.entries(S.telugu_voices)), h("button", { class: "sbtn", text: "Play", onclick: () => play("telugu") })),
+      srow("Speed", "Faster or slower speech.", ...slider("speech_rate", -40, 40, 5, signed("%"))),
+      srow("Pitch", "Higher or deeper.", ...slider("speech_pitch", -30, 30, 2, signed(" Hz"))),
+      srow("Volume", null, ...slider("volume", 10, 150, 5, v => v + "%")),
+      srow("Robot voice", "Deep, metallic robot effect on top of the voice: pitch down plus a vocoder layer.", toggle("robot_voice")),
+      srow("Robot depth", "How much metal: 0 is the plain voice, 100 is full vocoder.", ...slider("robot_depth", 0, 100, 5, v => v + "%")),
+      srow("Pitch down", "How far the robot effect lowers the voice.", ...slider("robot_pitch", -12, 0, 1, v => v + " st")),
+      note("Press Play after a change to hear it."),
+    ];
+  }
+
+  async function micsTab() {
+    const list = CACHE.mics || [];
+    const cards = list.map(m => {
+      const strict = h("input", { type: "range", min: .25, max: .6, step: .01 });
+      strict.value = m.match ?? .45;
+      const sv = h("span", { class: "val", text: m.match == null ? "Standard" : (+m.match).toFixed(2) });
+      const saveStrict = delayed(async v => { await api().mic_set(m.key, "match", v); toast("Saved"); });
+      strict.oninput = () => { sv.textContent = (+strict.value).toFixed(2); saveStrict(+strict.value); };
+      const clap = h("input", { type: "range", min: 300, max: 8000, step: 50 });
+      clap.value = m.clap_peak ?? S.values.clap_peak;
+      const cv2 = h("span", { class: "val", text: m.clap_peak == null ? "Standard" : m.clap_peak });
+      const saveClap = delayed(async v => { await api().mic_set(m.key, "clap_peak", v); toast("Saved"); });
+      clap.oninput = () => { cv2.textContent = clap.value; saveClap(+clap.value); };
+      return h("div", { class: "card" },
+        h("div", { class: "top" }, h("b", { text: m.key }),
+          m.current ? h("span", { class: "chipx on", text: "In use" }) : null,
+          h("span", { class: "chipx", text: m.connected ? "Plugged in" : "Not plugged in" }),
+          m.imprinted ? h("span", { class: "chipx ok", text: "Voice learned" }) : null),
+        m.people.length ? h("div", { class: "mini", text: "Voices learned on it: " + m.people.join(", ") }) : null,
+        h("div", { class: "mini" }, h("span", { text: "Voice match strictness" }), h("span", { class: "ctl" }, strict, sv)),
+        h("div", { class: "mini" }, h("span", { text: "Clap level (lower hears softer claps)" }), h("span", { class: "ctl" }, clap, cv2)),
+        h("div", { class: "acts" },
+          m.current ? h("button", { class: "sbtn primary", text: m.imprinted ? "Learn my voice again" : "Learn my voice on this mic", onclick: async () => {
+            const r = await api().mic_learn();
+            if (!r.ok) return toast(r.error, true);
+            closeDrawers();
+            toast("Follow Prime: repeat each line after the beep, then clap twice");
+          } }) : null,
+          (m.match != null || m.clap_peak != null) ? h("button", { class: "sbtn", text: "Reset to standard", onclick: async () => {
+            await api().mic_set(m.key, "match", null); await api().mic_set(m.key, "clap_peak", null); toast("Reset"); refreshSettings();
+          } }) : null,
+          h("button", { class: "sbtn danger", text: "Forget", onclick: async () => {
+            if (!confirm(`Forget "${m.key}"?\n\nIts voiceprints and levels are removed. If it is used again it is treated as a new microphone.`)) return;
+            await api().mic_forget(m.key); toast("Forgotten"); refreshSettings();
+          } })));
+    });
+    const options = [["", "Mac default (System Settings › Sound)"], ...list.filter(m => m.connected).map(m => [m.key, m.key])];
+    if (S.values.mic_device && !options.some(([k]) => k === S.values.mic_device)) options.push([S.values.mic_device, S.values.mic_device + " (not plugged in)"]);
+    return [
+      section("Microphone"),
+      srow("Listen with", "Follow the Mac's default, or always use one mic whenever it's plugged in.", choice("mic_device", options)),
+      note("The same voice sounds different through different mics, so Prime learns your voice, how strict to be and how loud a clap is separately for each one. Higher strictness makes it harder for anyone else to pass as you; lower recognises you more easily. Mics are remembered after you unplug them."),
+      ...cards,
+      section("Waking up"),
+      srow("Wake word sensitivity", "Higher wakes less by accident; lower hears you from further away. The built-in \"Hey Jarvis\" phrase also still wakes Prime.", ...slider("wake_threshold", .2, .9, .05, v => (+v).toFixed(2))),
+      srow("Answer to its name in a sentence", null, toggle("wake_by_name")),
+      srow("Double clap", null, toggle("wake_by_clap")),
+      srow("Standard clap level", "For mics that haven't learned their own.", ...slider("clap_peak", 300, 8000, 50, v => v)),
+      srow("End of sentence", "The pause that means you've finished.", ...slider("end_of_speech", .4, 2, .1, v => (+v).toFixed(1) + " s")),
+      srow("Follow-up window", "Answer without its name right after it asks you something (0 = off).", ...slider("follow_up_seconds", 0, 15, 1, v => v + " s")),
+    ];
+  }
+
+  async function peopleTab() {
+    const list = CACHE.people || [];
+    const learnVoice = async name => {
+      const r = await api().person_add_voice(name);
+      if (!r.ok) return toast(r.error, true);
+      closeDrawers();
+      toast(`${name}: repeat each line after the beep`);
+    };
+    const learnFace = async (name, owner) => {
+      const r = await api().person_add_face(name, owner);
+      if (!r.ok) return toast(r.error, true);
+      toast(`${name}: look at the camera`);
+    };
+    const forget = async (p, what) => {
+      if (!confirm(`Forget ${p.name}'s ${what}?`)) return;
+      await api().person_forget(p.name, what); toast("Forgotten"); refreshSettings();
+    };
+    const cards = list.map(p => h("div", { class: "card" },
+      h("div", { class: "top" }, h("b", { text: p.name }),
+        p.owner ? h("span", { class: "chipx on", text: "Owner" }) : null,
+        h("span", { class: "chipx" + (p.voice ? " ok" : ""), text: p.voice ? "Voice" + (p.voice_mics.length ? ` · ${p.voice_mics.length} mic${p.voice_mics.length > 1 ? "s" : ""}` : "") : "No voice" }),
+        h("span", { class: "chipx" + (p.face ? " ok" : ""), text: p.face ? "Face" : "No face" })),
+      h("div", { class: "acts" },
+        h("button", { class: "sbtn", text: "Rename", onclick: async () => {
+          const n = prompt(`New name for ${p.name}:`, p.name);
+          if (!n || n.trim() === p.name) return;
+          const err = await api().person_rename(p.name, n);
+          toast(err || "Renamed", !!err); refreshSettings();
+        } }),
+        p.owner ? null : h("button", { class: "sbtn", text: "Make owner", onclick: async () => {
+          if (!confirm(`Make ${p.name} the owner?\n\nOnly the owner's voice can approve actions.`)) return;
+          const err = await api().person_owner(p.name);
+          toast(err || "Done", !!err); refreshSettings();
+        } }),
+        h("button", { class: "sbtn", text: p.voice ? "Add more voice" : "Learn voice", onclick: () => learnVoice(p.name) }),
+        h("button", { class: "sbtn", text: p.face ? "Learn face again" : "Learn face", onclick: () => learnFace(p.name, p.owner) }),
+        p.voice ? h("button", { class: "sbtn danger", text: "Forget voice", onclick: () => forget(p, "voice") }) : null,
+        p.face ? h("button", { class: "sbtn danger", text: "Forget face", onclick: () => forget(p, "face") }) : null)));
+    const name = h("input", { type: "text", placeholder: "Their name, e.g. Priya" });
+    return [
+      section("People Prime knows"),
+      note("Only numbers are kept: a voiceprint and a face print, never recordings or photos. The owner's voice is the only one that can approve actions. A voice is learned on the microphone in use at the time."),
+      ...(cards.length ? cards : [note("Nobody yet.")]),
+      section("Add someone"),
+      h("div", { class: "addbox" }, name, h("div", { class: "acts" },
+        h("button", { class: "sbtn primary", text: "Learn their voice", onclick: () => name.value.trim() ? learnVoice(name.value.trim()) : toast("Type a name first", true) }),
+        h("button", { class: "sbtn", text: "Learn their face", onclick: () => name.value.trim() ? learnFace(name.value.trim(), false) : toast("Type a name first", true) }))),
+    ];
+  }
+
+  function youTab() {
+    return [
+      section("Its name"),
+      srow("Assistant's name", "Shown on screen and used when it speaks. It answers to this name in a sentence; \"Hey Jarvis\" remains the trained wake phrase.", textbox("name", "Prime")),
+      section("How it talks to you"),
+      srow("Call me", "Leave empty for no title at all.", textbox("call_me", "sir")),
+      srow("Humour", "A light, dry line now and then.", toggle("humour", "normal", "off")),
+      srow("Replies", null, choice("reply_length", [["short", "Short"], ["detailed", "More detail"]])),
+    ];
+  }
+
+  function behaviourTab() {
+    return [
+      section("Actions"),
+      srow("Your own requests", "Just do them, or ask first before anything that changes something. Sensitive actions always ask.", choice("approvals", [["auto", "Just do it"], ["ask", "Ask first"]])),
+      section("Games"),
+      srow("Game mode", "With a game fullscreen, the window stays out of the way and Prime never clicks or types into it.", toggle("game_mode")),
+      section("Quiet hours"),
+      srow("Quiet hours", "Replies and reminders are shown, not spoken.", toggle("quiet_on")),
+      srow("From", null, timebox("quiet_from")),
+      srow("To", null, timebox("quiet_to")),
+    ];
+  }
+
+  function systemTab() {
+    return [
+      section("Brain"),
+      srow("Claude model", "Faster models answer sooner.", choice("model", [["", "Account default"], ["sonnet", "Sonnet (fast)"], ["haiku", "Haiku (fastest)"], ["opus", "Opus (smartest)"]])),
+      srow("Fresh chat after", "Idle this long starts a new conversation, which keeps answers fast. Memory is kept.", ...slider("fresh_chat_minutes", 2, 240, 1, v => v + " min")),
+      section("Start-up"),
+      srow("Start at login", null, toggle("start_at_login")),
+      srow("Start hidden", "Wait in the menu bar until called.", toggle("start_hidden")),
+      srow("Window position", "Put it back at the right edge of the screen.", h("button", { class: "sbtn", text: "Reset", onclick: async () => { await api().reset_window(); toast("Done"); } })),
+      section("Privacy"),
+      srow("Keep chat history", "Days to keep it (0 keeps everything).", numberbox("history_days", 0, 3650)),
+      srow("Export your data", "History, reminders and notes, to a file.", h("button", { class: "sbtn", text: "Export", onclick: async () => { const r = await api().export_data(); toast(r ? "Exported" : "Done"); } })),
+    ];
+  }
+
+  // What the Settings page shows is kept here, so it opens instantly; fresh data is fetched in the background
+  // and the page redrawn only if something changed. (Prime's own process can be busy listening.)
+  const CACHE = { mics: null, people: null };
+  function fresh(kind, fetch) {
+    fetch().then(v => {
+      if (JSON.stringify(v) === JSON.stringify(CACHE[kind])) return;
+      CACHE[kind] = v;
+      if (kind === setTab) renderSettings(false);
+    }).catch(e => reportError(`settings ${kind}: ${e}`));
+  }
+  async function renderSettings(refetch = true) {
+    const t0 = performance.now();
+    $("set-tabs").replaceChildren(...TABS.map(([k, label]) =>
+      h("button", { class: "tab" + (k === setTab ? " on" : ""), text: label, onclick: () => { setTab = k; renderSettings(); } })));
+    const make = { voice: voiceTab, mics: micsTab, people: peopleTab, you: youTab, behaviour: behaviourTab, system: systemTab }[setTab];
+    if (refetch && setTab === "mics") fresh("mics", () => api().mics_list());
+    if (refetch && setTab === "people") fresh("people", () => api().people_list());
+    if ((setTab === "mics" || setTab === "people") && !CACHE[setTab]) {
+      $("set-body").replaceChildren(note("Loading..."));                      // only the very first time
+      return;
+    }
+    try {
+      $("set-body").replaceChildren(...(await make()));
+    } catch (e) {
+      $("set-body").replaceChildren(note("Couldn't load this page: " + e));
+    }
+    const ms = performance.now() - t0;
+    if (ms > 250) reportError(`settings ${setTab} took ${ms.toFixed(0)} ms to draw`);
+  }
+  async function openSettings(tab) {
+    if (tab) setTab = tab;
+    $("settingsbox").classList.add("open");                  // open straight away, from what is already known
+    if (S) {
+      renderSettings();
+      api().settings_get().then(v => { const changed = JSON.stringify(v.values) !== JSON.stringify(S.values); S = v; if (changed) renderSettings(false); })
+        .catch(e => reportError("settings: " + e));
+      return;
+    }
+    $("set-body").replaceChildren(note("Loading..."));
+    try {
+      S = await api().settings_get();
+      renderSettings();
+    } catch (e) {
+      $("set-body").replaceChildren(note("Settings couldn't load: " + (e && e.message || e)));
+      reportError("settings: " + (e && e.stack || e));
+    }
+  }
+  function prefetchSettings() {                                // at start-up, so the first open is instant too
+    api().settings_get().then(v => { S = v; }).catch(() => {});
+    api().mics_list().then(v => { CACHE.mics = v; }).catch(() => {});
+    api().people_list().then(v => { CACHE.people = v; }).catch(() => {});
+  }
+  // page errors go to jarvis.log, so a problem on screen can be traced
+  function reportError(msg) {
+    try { window.pywebview && api().log_error(String(msg).slice(0, 2000)); } catch (e) { /* nothing more to do */ }
+  }
+  window.addEventListener("error", e => reportError(`${e.message} (line ${e.lineno})`));
+  window.addEventListener("unhandledrejection", e => reportError("unhandled: " + (e.reason && e.reason.stack || e.reason)));
+  function refreshSettings(only) {
+    if ($("settingsbox").classList.contains("open") && (!only || only === setTab)) renderSettings();
+  }
+  function setName(n) {
+    $("brand-name").textContent = n;
+    $("text").placeholder = `Ask ${n} anything...`;
+  }
+  function onMicChanged(d) {
+    refreshSettings("mics");
+    if (d && d.new) add("note", `New microphone: ${d.key}. Open Settings, Mics, to teach Prime your voice on it.`);
+  }
+  $("settings-btn").onclick = () => openSettings();
+
+  document.addEventListener("visibilitychange", render);  // minimised: stop animating
+  render();
+</script>
+</body>
+</html>
